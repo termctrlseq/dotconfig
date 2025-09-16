@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# Show command's help page with syntax highlighting
+
+if command -v bat >/dev/null 2>&1; then
+  if (( "${#@}" == 1 )); then
+    if "$1" --help >/dev/null 2>&1; then
+      "$1" --help | bat -plhelp
+    elif help "$1" >/dev/null 2>&1; then
+      help "$1" | bat -plhelp
+    elif "$1" -h >/dev/null 2>&1; then
+      "$1" -h | bat -plhelp
+    else
+      echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
+      exit 1
+    fi
+  elif (( "${#@}" > 1 )); then
+    if "$1" "help" "${@:2}" >/dev/null 2>&1; then
+      "$1" "help" "${@:2}" | bat -plhelp
+    else
+      echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
+      exit 1
+    fi
+  else
+    echo "Usage: h [COMMAND] [ARGUMENT]" | bat -plhelp
+  fi
+else
+  echo -e "\e[1;31mError\e[0m: this command requires 'bat'"
+  exit 1
+fi
