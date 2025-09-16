@@ -100,6 +100,7 @@ update_ps1() {
     is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
     # is_ssh+="\[\e[38;5;8m\]🭪\[\e[0m\]"
   fi
+  # show current git branch
   # local git_branch="$(git branch --show-current 2>/dev/null)"
   # local git_str=
   # [[ -n git_branch ]] && git_str="\[\e[1;38;5;242m\][$git_branch]\[\e[0m\]"
