@@ -18,8 +18,6 @@ stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 export EDITOR='vim'
 export PAGER='less'
 export LESS='-R --mouse --wheel-lines=3' 
-# make less more friendly for non-text input files, see lesspipe(1)
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
@@ -36,41 +34,9 @@ export LESS='-R --mouse --wheel-lines=3'
 
 [[ -x /usr/bin/xdg-open ]] && alias o='/usr/bin/xdg-open'
 [[ -x /usr/bin/tgpt ]] && alias tgpt='/usr/bin/tgpt --log ~/tgpt_log.md'
-if command -v virt-viewer >/dev/null 2>&1; then
-  virt_viewer() {
-    local virt_viewer=()
-    virt_viewer+=('virt-viewer')
-    virt_viewer+=('--connect=qemu:///system')
-    virt_viewer+=('--hotkeys=release-cursor=alt+enter')
-    virt_viewer+=('--wait')
-    GDK_BACKEND=x11 command "${virt_viewer[@]}" "$@" >> ~/.virt_viewer.log 2>&1 &
-  }
-  alias virt-viewer='virt_viewer'
-fi
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
-  h() {
-    if (( "${#@}" == 1 )); then
-      if "$1" --help >/dev/null 2>&1; then
-        "$1" --help | bat -plhelp
-      elif help "$1" >/dev/null 2>&1; then
-        help "$1" | bat -plhelp
-      elif "$1" -h >/dev/null 2>&1; then
-        "$1" -h | bat -plhelp
-      else
-        echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
-      fi
-    elif (( "${#@}" > 1 )); then
-      if "$1" "help" "${@:2}" >/dev/null 2>&1; then
-        "$1" "help" "${@:2}" | bat -plhelp
-      else
-        echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
-      fi
-    else
-      echo "Usage: h [COMMAND] [ARGUMENT]" | bat -plhelp
-    fi
-  }
   if command -v batman >/dev/null 2>&1; then
     alias man='batman'
     export BATPIPE=color
@@ -123,19 +89,20 @@ update_ps1() {
   (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]"
   local venv=
   if [[ -v VIRTUAL_ENV_PROMPT ]]; then
-    venv="\[\e[38;5;12m\]󰌠_${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
+    venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
   fi
   local wdir="\w"
   [[ -v TMUX ]] && wdir="\W" # only show last part of cwd when in tmux
   if [[ -v SSH_CONNECTION ]]; then
     local is_ssh=
-    is_ssh+="\[\e[38;5;31m\]"
-    is_ssh+="\[\e[48;5;31m\e[1;38;5;232m\]\u@\h\[\e[0m"
-    is_ssh+="\e[38;5;31m\]\[\e[0m\]"
+    is_ssh+="\[\e[38;5;8m\]"
+    is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
+    is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
+    # is_ssh+="\[\e[38;5;8m\]🭪\[\e[0m\]"
   fi
-  local git_branch="$(git branch --show-current 2>/dev/null)"
-  local git_str=
-  [[ -n git_branch ]] && git_str+="\[\e[1;38;5;242m\][$git_branch]\[\e[0m\]"
+  # local git_branch="$(git branch --show-current 2>/dev/null)"
+  # local git_str=
+  # [[ -n git_branch ]] && git_str="\[\e[1;38;5;242m\][$git_branch]\[\e[0m\]"
   PS1=
   PS1+="$exit_code"
   PS1+="$venv"
