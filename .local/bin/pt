@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+#
+# ~/.local/bin/pt
+#
+# Choose python interpreter and modules
+
+if [[ "$*" =~ (-h|--help) ]]; then
+  echo "Usage:"
+  echo -e "\tipy: ipython"
+  echo -e "\tpti: ptipython"
+  echo -e "\tpt:  ptpython"
+  echo
+  echo "Choose python REPL and modules."
+  echo "If query starts with a plus(+), it is added as a module."
+  echo "Requires: uv and fzf."
+  exit 0
+fi
+
+# Choose interpreter based on command name
+case "$(basename "$0")" in
+  ipy) interpreter='ipython --profile=ipy' ;;
+  pti) interpreter='--from ptpython ptipython'; add_ipython='ipython' ;;
+  *)  interpreter='ptpython' ;;
+esac
+
+# Additional modules
+add_modules='rich'
+
+# In a virtual environment no need to choose modules
+if [[ -v VIRTUAL_ENV ]]; then
+  add_modules=
+else
+  # Get virtual environment path
+  venv_path="$(realpath .)"
+  until [[ -d "$venv_path/.venv" ]]; do
+    if [[ "$venv_path" == '/' ]]; then
+      if [[ -d ~/Code/.venv ]]; then
+        venv_path="$(realpath ~/Code)"
+      else
+        venv_path=''
+      fi
+      break
+    fi
+    venv_path="$(dirname $venv_path)"
+  done
+  if [[ -n "$venv_path" ]]; then
+    # List modules in virtual environment
+    uv_pip_list="$(uv pip list -q --directory "$venv_path")"
+  else
+    # Do not list systemwide modules
+    uv_pip_list=''
+  fi
+
+  # Create an array of chosen modules
+  mapfile -t modules < <(
+    echo -e "$uv_pip_list" |
+      sed -n '3,$p'        |
+      awk    '{print $1}'  |
+      cat ~/.pti_history - 2>/dev/null |
+      fzf --multi --height ~25% --print-query --layout reverse --border
+    )
+
+  if [[ -n "${modules[*]}" ]]; then
+    # If first line (query) starts with '+' remove plus, else remove line
+    if [[ -n "${modules[0]}" && "${modules[0]}" =~ ^\+ ]]; then
+      modules[0]="${modules[0]#+}"
+    else
+      unset 'modules[0]'
+    fi
+    for line in "${modules[@]}"; do
+      # Check for invalid characters
+      if ! [[ "$line" =~ ^[a-zA-Z0-9_.,-]*$ ]]; then
+       echo -e "\x1b[31mError\x1b[0m: Invalid module name: '$line'"
+       exit 1
+      fi
+    done
+    # Add comma separated modules to history
+    [[ -f ~/.pti_history ]] && mapfile -t old_history < ~/.pti_history
+    new_history=("$(IFS=, ; echo "${modules[*]}")")
+    for (( i=0; i < ${#old_history[@]}; i++ )); do
+      if [[ "$new_history" != "${old_history[$i]}" ]]; then
+        new_history+=("${old_history[$i]}")
+      fi
+    done
+    printf "%s\n" "${new_history[@]}" > ~/.pti_history
+  fi
+fi
+
+# Add modules
+[[ -n "$add_modules" ]] && modules+=("$add_modules")
+[[ -n "$add_ipython" ]] && modules+=("$add_ipython")
+
+if (( ${#modules[@]} )); then
+  modules_str="$(IFS=, ; echo "${modules[*]}")"
+  cmd=(uvx --with "$modules_str" $interpreter $@)
+else
+  cmd=(uvx $interpreter $@)
+fi
+
+# Print command
+cmd_str="${cmd[*]}"
+printf "\x1b[1;38;5;245m$ %s\x1b[0m\n" "$cmd_str"
+
+# Run command
+"${cmd[@]}"

@@ -6,4 +6,6 @@
 !.gitignore
 !.tmux.conf
 !.vimrc
+!.local
+!.local/bin
 !.local/bin/pt
