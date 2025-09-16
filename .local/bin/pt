@@ -16,6 +16,12 @@ if [[ "$*" =~ (-h|--help) ]]; then
   exit 0
 fi
 
+# Check for uv/fzf presence
+command -v uv >/dev/null 2>&1 || \
+  echo -e '\e[1;31mError\e[0m: \e[1muv\e[0m required but not found.'
+command -v fzf >/dev/null 2>&1 || \
+  echo -e '\e[1;31mError\e[0m: \e[1mfzf\e[0m required but not found.'
+
 # Choose interpreter based on command name
 case "$(basename "$0")" in
   ipy) interpreter='ipython --profile=ipy' ;;
