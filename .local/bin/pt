@@ -2,7 +2,7 @@
 #
 # ~/.local/bin/pt
 #
-# Choose python interpreter and modules
+# Choose python repl and modules
 
 if [[ "$*" =~ (-h|--help) ]]; then
   echo "Usage:"
@@ -22,11 +22,11 @@ command -v uv >/dev/null 2>&1 || \
 command -v fzf >/dev/null 2>&1 || \
   echo -e '\e[1;31mError\e[0m: \e[1mfzf\e[0m required but not found.'
 
-# Choose interpreter based on command name
+# Choose repl based on command name
 case "$(basename "$0")" in
-  ipy) interpreter='ipython --profile=ipy' ;;
-  pti) interpreter='--from ptpython ptipython'; add_ipython='ipython' ;;
-  *)  interpreter='ptpython' ;;
+  ipy) repl='ipython --profile=ipy' ;;
+  pti) repl='--from ptpython ptipython'; add_ipython='ipython' ;;
+  *)  repl='ptpython' ;;
 esac
 
 # Additional modules
@@ -84,9 +84,8 @@ else
     [[ -f ~/.pti_history ]] && mapfile -t old_history < ~/.pti_history
     new_history=("$(IFS=, ; echo "${modules[*]}")")
     for (( i=0; i < ${#old_history[@]}; i++ )); do
-      if [[ "$new_history" != "${old_history[$i]}" ]]; then
+      [[ "$new_history" != "${old_history[$i]}" ]] && \
         new_history+=("${old_history[$i]}")
-      fi
     done
     printf "%s\n" "${new_history[@]}" > ~/.pti_history
   fi
@@ -98,9 +97,9 @@ fi
 
 if (( ${#modules[@]} )); then
   modules_str="$(IFS=, ; echo "${modules[*]}")"
-  cmd=(uvx --with "$modules_str" $interpreter $@)
+  cmd=(uvx --with "$modules_str" $repl $@)
 else
-  cmd=(uvx $interpreter $@)
+  cmd=(uvx $repl $@)
 fi
 
 # Print command

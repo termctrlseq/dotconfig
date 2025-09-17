@@ -3,6 +3,7 @@
 # Show command's help page with syntax highlighting
 
 if command -v bat >/dev/null 2>&1; then
+  # Number of arguments is one
   if (( "${#@}" == 1 )); then
     if "$1" --help >/dev/null 2>&1; then
       "$1" --help | bat -plhelp
@@ -14,6 +15,7 @@ if command -v bat >/dev/null 2>&1; then
       echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
       exit 1
     fi
+  # Number of arguments is greater than one
   elif (( "${#@}" > 1 )); then
     if "$1" "help" "${@:2}" >/dev/null 2>&1; then
       "$1" "help" "${@:2}" | bat -plhelp
@@ -25,6 +27,6 @@ if command -v bat >/dev/null 2>&1; then
     echo "Usage: h [COMMAND] [ARGUMENT]" | bat -plhelp
   fi
 else
-  echo -e "\e[1;31mError\e[0m: this command requires 'bat'"
+  echo -e "\e[1;31mError\e[0m: \e[1mbat\e[0m: not found"
   exit 1
 fi
