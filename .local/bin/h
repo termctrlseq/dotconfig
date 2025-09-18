@@ -19,6 +19,8 @@ if command -v bat >/dev/null 2>&1; then
   elif (( "${#@}" > 1 )); then
     if "$1" "help" "${@:2}" >/dev/null 2>&1; then
       "$1" "help" "${@:2}" | bat -plhelp
+    elif "$@" --help >/dev/null 2>&1; then
+      "$@" --help | bat -plhelp
     else
       echo -e "\e[1;31mError\e[0m: no help found for command '$@'"
       exit 1
