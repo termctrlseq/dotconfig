@@ -13,7 +13,7 @@ HISTCONTROL=ignoredups:erasedups
 HISTSIZE=999
 shopt -s histappend globstar failglob
 
-set -o vi # Bash vi mode
+# set -o vi # Bash vi mode
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 export EDITOR='vim'
 export PAGER='less'
@@ -116,3 +116,8 @@ update_ps1() {
 }
 # executed prior to issuing each primary prompt.
 PROMPT_COMMAND=update_ps1
+
+# Ctrl-o to quickly switch emacs/vi modes
+bind -m vi-command '"\C-o": emacs-editing-mode'
+bind -m vi-insert '"\C-o": emacs-editing-mode'
+bind -m emacs-standard '"\C-o": vi-editing-mode'
