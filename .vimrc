@@ -138,7 +138,7 @@ set completeopt=menuone,noinsert,noselect,preview
 if exists('$TMUX')
   set ttymouse=xterm2 " vim mouse support inside tmux
 endif
-set tags=./tags;    " if tags file not found in cwd, look in parent dirs
+set tags=tags;~    " if tags file not found in cwd, look in parent dirs
 " use interactive shell for external commands (loads .bashrc)
 set shellcmdflag=-ic
 set autoread " if a file has been changed outside of Vim read it again.
