@@ -13,11 +13,15 @@ HISTCONTROL=ignoredups:erasedups
 HISTSIZE=999
 shopt -s histappend globstar failglob
 
-# set -o vi # Bash vi mode
-stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 export EDITOR='vim'
 export PAGER='less'
 export LESS='-R --mouse --wheel-lines=3' 
+stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
+set -o vi # Bash vi mode
+# Ctrl-o to quickly switch emacs/vi modes
+bind -m vi-command '"\C-o": emacs-editing-mode'
+bind -m vi-insert '"\C-o": emacs-editing-mode'
+bind -m emacs-standard '"\C-o": vi-editing-mode'
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
@@ -32,8 +36,8 @@ export LESS='-R --mouse --wheel-lines=3'
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
   . /usr/share/bash-completion/bash_completion
 
-[[ -x /usr/bin/xdg-open ]] && alias o='/usr/bin/xdg-open'
-[[ -x /usr/bin/tgpt ]] && alias tgpt='/usr/bin/tgpt --log ~/tgpt_log.md'
+command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
+command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
@@ -57,14 +61,12 @@ fi
 [[ -x /usr/bin/cargo && ":${PATH}:" != *:"$HOME/.cargo/bin":* ]] && \
   export PATH="$HOME/.cargo/bin:$PATH"
 # Mocword - Predict next words
-if command -v mocword >/dev/null 2>&1; then
+command -v mocword >/dev/null 2>&1 &&\
   export MOCWORD_DATA="$HOME/.local/share/mocword/mocword.sqlite"
-fi
 
 # Enable shell autocompletion for uv commands
-if command -v uv >/dev/null 2>&1; then
+command -v uv >/dev/null 2>&1 &&\
   eval "$(uv generate-shell-completion bash)"
-fi
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
@@ -116,8 +118,3 @@ update_ps1() {
 }
 # executed prior to issuing each primary prompt.
 PROMPT_COMMAND=update_ps1
-
-# Ctrl-o to quickly switch emacs/vi modes
-bind -m vi-command '"\C-o": emacs-editing-mode'
-bind -m vi-insert '"\C-o": emacs-editing-mode'
-bind -m emacs-standard '"\C-o": vi-editing-mode'
