@@ -15,10 +15,10 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 
 
-" Lean & mean status/tabline for vim that's light as air:
+" Lean & mean status/tabline for vim that's light as air.
 Plugin 'vim-airline/vim-airline'
 
-" Official theme repository for vim-airline
+" Official theme repository for vim-airline.
 Plugin 'vim-airline/vim-airline-themes'
 
 " Vim Tmux Navigator
