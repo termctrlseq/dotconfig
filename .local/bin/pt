@@ -63,6 +63,7 @@ else
       sed -n '3,$p'        |
       awk    '{print $1}'  |
       cat ~/.pti_history - 2>/dev/null |
+      sed    '/^$/d'       |
       fzf --multi --height ~25% --print-query --layout reverse --border
     )
 
@@ -84,8 +85,9 @@ else
     [[ -f ~/.pti_history ]] && mapfile -t old_history < ~/.pti_history
     new_history=("$(IFS=, ; echo "${modules[*]}")")
     for (( i=0; i < ${#old_history[@]}; i++ )); do
+      [[ -n "${old_history[$i]}" ]] && \
       [[ "$new_history" != "${old_history[$i]}" ]] && \
-        new_history+=("${old_history[$i]}")
+          new_history+=("${old_history[$i]}")
     done
     printf "%s\n" "${new_history[@]}" > ~/.pti_history
   fi
