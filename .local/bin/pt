@@ -47,7 +47,7 @@ else
       fi
       break
     fi
-    venv_path="$(dirname $venv_path)"
+    venv_path="$(dirname "$venv_path")"
   done
   if [[ -n "$venv_path" ]]; then
     # List modules in virtual environment
@@ -86,7 +86,7 @@ else
     new_history=("$(IFS=, ; echo "${modules[*]}")")
     for (( i=0; i < ${#old_history[@]}; i++ )); do
       [[ -n "${old_history[$i]}" ]] && \
-      [[ "$new_history" != "${old_history[$i]}" ]] && \
+      [[ "${new_history[0]}" != "${old_history[$i]}" ]] && \
           new_history+=("${old_history[$i]}")
     done
     printf "%s\n" "${new_history[@]}" > ~/.pti_history
@@ -99,9 +99,9 @@ fi
 
 if (( ${#modules[@]} )); then
   modules_str="$(IFS=, ; echo "${modules[*]}")"
-  cmd=(uvx --with "$modules_str" $repl $@)
+  cmd=(uvx --with "$modules_str" "$repl" "$@")
 else
-  cmd=(uvx $repl $@)
+  cmd=(uvx "$repl" "$@")
 fi
 
 # Print command
