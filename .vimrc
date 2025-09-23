@@ -114,7 +114,7 @@ set number          " Print the line number in front of each line.
 set splitbelow      " put the new window below the current
 set ignorecase      " the case of normal letters is ignored
 set smartcase       " ignore case when the pattern contains lowercase letters only
-" set autowrite       " write to file when changing buffer
+set autowrite       " write to file when changing buffer
 set hidden          " buffer becomes hidden when it is abandoned
 set expandtab       " Use the appropriate number of spaces to insert a <Tab>
 set tabstop=4       " number of spaces a <TAB> stands for
