@@ -3,8 +3,10 @@
 # Show command's help page with syntax highlighting
 
 if command -v bat >/dev/null 2>&1; then
+  if [[ "$@" =~ .*-h ]]; then
+    "$@" | bat -plhelp
   # Number of arguments is one
-  if (( "${#@}" == 1 )); then
+  elif (( "${#@}" == 1 )); then
     if "$1" --help >/dev/null 2>&1; then
       "$1" --help | bat -plhelp
     elif help "$1" >/dev/null 2>&1; then
