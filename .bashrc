@@ -9,9 +9,10 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 # see bash(1)
-HISTCONTROL=ignoredups:erasedups
-HISTSIZE=999
-shopt -s histappend globstar failglob
+export HISTCONTROL="erasedups:ignorespace"
+export HISTSIZE=999
+export HISTTIMEFORMAT="%F %T "
+shopt -s histappend globstar failglob dotglob
 
 export EDITOR='vim'
 export PAGER='less'
@@ -20,8 +21,13 @@ stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 # Ctrl-o to quickly switch emacs/vi modes
 bind -m vi-command '"\C-o": emacs-editing-mode'
-bind -m vi-insert '"\C-o": emacs-editing-mode'
-bind -m emacs-standard '"\C-o": vi-editing-mode'
+bind -m vi-insert  '"\C-o": emacs-editing-mode'
+bind -m emacs      '"\C-o": vi-editing-mode'
+# invoke the manual for the command preceding the cursor by pressing Alt+h.
+run-help() { help $READLINE_LINE 2>/dev/null || man $READLINE_LINE ; }
+bind -m vi-command -x '"\eh": run-help'
+bind -m vi-insert  -x '"\eh": run-help'
+bind -m emacs      -x '"\eh": run-help'
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
@@ -31,10 +37,6 @@ bind -m emacs-standard '"\C-o": vi-editing-mode'
 # => dircolors --print-database > ~/.dir_colors
 # Edit ~/.dir_colors as needed
 [[ -f "$HOME/.dir_colors" ]] && eval "$(dircolors "$HOME/.dir_colors")"
-
-# Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-  . /usr/share/bash-completion/bash_completion
 
 command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
