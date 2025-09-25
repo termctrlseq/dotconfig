@@ -39,6 +39,8 @@ Plugin 'kg8m/asyncomplete-mocword.vim'
 Plugin 'prabirshrestha/asyncomplete-buffer.vim'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'keremc/asyncomplete-clang.vim'
+Plugin 'Shougo/neco-vim'
+Plugin 'prabirshrestha/asyncomplete-necovim.vim'
 
 
 " All of your Plugins must be added before the following line
