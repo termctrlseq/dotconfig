@@ -99,7 +99,7 @@ fi
 
 if (( ${#modules[@]} )); then
   modules_str="$(IFS=, ; echo "${modules[*]}")"
-  cmd=(uvx --with "$modules_str" "$repl" "$@")
+  cmd=(uvx --with "$modules_str" $repl "$@")
 else
   cmd=(uvx "$repl" "$@")
 fi
