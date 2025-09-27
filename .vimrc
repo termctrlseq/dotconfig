@@ -144,6 +144,8 @@ set tags=./tags;~/tags    " if tags file not found in cwd, look in parent dirs
 " use interactive shell for external commands (loads .bashrc)
 set shellcmdflag=-ic
 set autoread " if a file has been changed outside of Vim read it again.
+set linebreak " wrap long lines at a character in 'breakat'
+set showbreak=>>>> " String to put at the start of lines that have been wrapped.
 
 " Change leader key
 let mapleader = ' '
