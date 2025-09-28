@@ -45,6 +45,7 @@ command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
+  export BAT_STYLE="changes,header,numbers"
 #  if command -v batman >/dev/null 2>&1; then
 #    alias man='batman'
 #    export BATPIPE=color
