@@ -98,9 +98,8 @@ update_ps1() {
   if [[ -v VIRTUAL_ENV_PROMPT ]]; then
     venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
   fi
-  local cwd="\w"
-  [[ -v TMUX ]] && cwd="\W" # show only last part of cwd when in tmux
-  cwd="\[\e[38;5;248m\]$cwd/"
+  local cwd="\W"
+  cwd="\[\e[38;5;248m\]$cwd\[\e[1;38;5;66m\]/"
   if [[ -v SSH_CONNECTION ]]; then
     local is_ssh=
     is_ssh+="\[\e[38;5;8m\]"
