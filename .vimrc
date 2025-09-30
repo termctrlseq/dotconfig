@@ -180,6 +180,7 @@ set shellcmdflag=-ic
 set autoread " if a file has been changed outside of Vim read it again.
 set linebreak " wrap long lines at a character in 'breakat'
 set showbreak=>>>> " String to put at the start of lines that have been wrapped.
+set updatetime=500 " delay before vim writes its swap file (for vim-gutter)
 
 " Change leader key
 let mapleader = ' '
