@@ -144,7 +144,6 @@ let g:airline_filetype_overrides = {
       \ 'vimshell': ['vimshell','%{vimshell#get_status_string()}'],
       \ 'vaffle' : [ 'Vaffle', '%{b:vaffle.dir}' ],
       \ }
-let g:airline_section_b = '%{system("gbs.sh", "%:p:h")}'
 
 " General vim setup
 set number          " Print the line number in front of each line.
