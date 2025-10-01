@@ -102,49 +102,6 @@ if has('syntax') && has('eval')
   packadd! matchit
 endif
 
-
-" Airline setup
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'zenburn_spx'
-" let g:airline_theme = 'zbx'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#whitespace#checks = []
-let g:airline_mode_map = {
-      \ '__'     : '-',
-      \ 'c'      : 'C',
-      \ 'i'      : 'I',
-      \ 'ic'     : 'I',
-      \ 'ix'     : 'I',
-      \ 'n'      : 'N',
-      \ 'multi'  : 'M',
-      \ 'ni'     : 'N',
-      \ 'no'     : 'N',
-      \ 'R'      : 'R',
-      \ 'Rv'     : 'R',
-      \ 's'      : 'S',
-      \ 'S'      : 'S',
-      \ ''     : 'S',
-      \ 't'      : 'T',
-      \ 'v'      : 'V',
-      \ 'V'      : 'V',
-      \ ''     : 'V',
-      \ }
-let g:airline_filetype_overrides = {
-      \ 'coc-explorer':  [ 'CoC Explorer', '' ],
-      \ 'defx':  ['defx', '%{b:defx.paths[0]}'],
-      \ 'fugitive': ['fugitive', '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'],
-      \ 'floggraph':  [ 'Flog', '%{get(b:, "flog_status_summary", "")}' ],
-      \ 'gundo': [ 'Gundo', '' ],
-      \ 'help':  [ 'Help', '%f' ],
-      \ 'minibufexpl': [ 'MiniBufExplorer', '' ],
-      \ 'nerdtree': [ get(g:, 'NERDTreeStatusline', 'NERD'), '' ],
-      \ 'startify': [ 'startify', '' ],
-      \ 'vim-plug': [ 'Plugins', '' ],
-      \ 'vimfiler': [ 'vimfiler', '%{vimfiler#get_status_string()}' ],
-      \ 'vimshell': ['vimshell','%{vimshell#get_status_string()}'],
-      \ 'vaffle' : [ 'Vaffle', '%{b:vaffle.dir}' ],
-      \ }
-
 " General vim setup
 set number          " Print the line number in front of each line.
 set splitbelow      " put the new window below the current
@@ -191,6 +148,9 @@ let &t_EI = "\e[2 q" " end insert or replace mode (block cursor shape)
 
 " COLORSCHEMES:
 colorscheme spx
+
+" airline
+source ~/.vim/airline_setup.vim
 
 " asyncomplete
 source ~/.vim/async-lsp.vim
