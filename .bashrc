@@ -15,7 +15,7 @@ export HISTTIMEFORMAT="%F %T "
 shopt -s histappend globstar failglob
 
 export EDITOR='vim'
-export PAGER='less'
+export PAGER='bat -p'
 export LESS='-R --mouse --wheel-lines=3' 
 export MANPAGER='vim +MANPAGER --not-a-term -'
 
