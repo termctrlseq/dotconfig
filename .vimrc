@@ -110,8 +110,8 @@ set smartcase       " ignore case when the pattern contains lowercase letters on
 set autowrite       " write to file when changing buffer
 set hidden          " buffer becomes hidden when it is abandoned
 set expandtab       " Use the appropriate number of spaces to insert a <Tab>
-set tabstop=4       " number of spaces a <TAB> stands for
-set shiftwidth=4    " number of spaces for each step of indent
+" set tabstop=4       " number of spaces a <TAB> stands for
+" set shiftwidth=4    " number of spaces for each step of indent
 set scrolloff=3     " Min number of screen lines to keep above and below the cursor.
 set backupcopy=yes  " Preserves file birth time
 " Time in milliseconds to wait for a key code or mapped key sequence to complete.
