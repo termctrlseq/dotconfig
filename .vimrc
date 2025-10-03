@@ -162,4 +162,4 @@ source ~/.vim/functions.vim
 source ~/.vim/bindings.vim
 
 " This plugin displays a manual page in a nice way.
-runtime! ftplugin/man.vim
+runtime ftplugin/man.vim
