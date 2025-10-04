@@ -26,7 +26,7 @@ bind -m vi-command '"\C-o": emacs-editing-mode'
 bind -m vi-insert  '"\C-o": emacs-editing-mode'
 bind -m emacs      '"\C-o": vi-editing-mode'
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
-run-help() { help $READLINE_LINE 2>/dev/null || man $READLINE_LINE ; }
+run-help() { h $READLINE_LINE; }
 bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
