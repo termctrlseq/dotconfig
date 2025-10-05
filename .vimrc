@@ -116,7 +116,7 @@ set scrolloff=3     " Min number of screen lines to keep above and below the cur
 set backupcopy=yes  " Preserves file birth time
 " Time in milliseconds to wait for a key code or mapped key sequence to complete.
 set timeoutlen=1500
-set path+=~/**      " Provides tab-completion for all file related tasks
+set path+=.,~/**      " Provides tab-completion for all file related tasks
 set path+=~/.config/**
 set path+=~/.local/**
 set path+=~/.vim/**
