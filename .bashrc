@@ -17,7 +17,7 @@ shopt -s histappend globstar failglob
 export EDITOR='vim'
 export PAGER='bat -p'
 export LESS='-R --mouse --wheel-lines=3' 
-export MANPAGER='vim +MANPAGER --not-a-term -'
+m() { man "$@" | vim +MANPAGER --not-a-term -; }
 
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
@@ -46,12 +46,12 @@ command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
 # bat setup
 if command -v bat >/dev/null 2>&1; then
   export BAT_STYLE="changes,header,numbers"
-#  if command -v batman >/dev/null 2>&1; then
-#    alias man='batman'
-#    export BATPIPE=color
-#    eval "$(batpipe)"
-#    eval "$(batman --export-env)"
-#  fi
+  if command -v batman >/dev/null 2>&1; then
+    alias man='BAT_STYLE=plain batman'
+    export BATPIPE=color
+    eval "$(batpipe)"
+    eval "$(batman --export-env)"
+  fi
   if [[ -f ~/.config/bat/themes/My-Theme.tmTheme ]]; then
     export BAT_THEME="My-Theme"
   else
