@@ -32,7 +32,7 @@ case "$(basename "$0")" in
 esac
 
 # Additional modules
-add_modules='rich'
+# add_modules='rich'
 
 # In a virtual environment no need to choose modules
 if [[ -v VIRTUAL_ENV ]]; then
