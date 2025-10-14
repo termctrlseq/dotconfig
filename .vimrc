@@ -80,7 +80,8 @@ augroup vimrcEx
   autocmd FileType text setlocal textwidth=78
 
   " Set indentation and textwidth
-  autocmd FileType vim,toml,html,sh,tmux,xml setlocal tabstop=2 shiftwidth=2
+  autocmd FileType vim,toml,html,xml setlocal tabstop=2 shiftwidth=2
+  autocmd FileType c,python,sh setlocal tabstop=4 shiftwidth=4
 
   " signcolumn breaks formatting of man pages
   autocmd FileType man setlocal signcolumn=no
