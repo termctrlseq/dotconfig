@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 if command -v virt-viewer >/dev/null 2>&1; then
-  virt_viewer=()
-  virt_viewer+=('/usr/bin/virt-viewer')
-  virt_viewer+=('--connect=qemu:///system')
-  virt_viewer+=('--hotkeys=release-cursor=alt+enter')
-  virt_viewer+=('--wait')
-  GDK_BACKEND=x11 command "${virt_viewer[@]}" "$@" >> ~/.virt_viewer.log 2>&1 &
+    virt_viewer=()
+    virt_viewer+=('/usr/bin/virt-viewer')
+    virt_viewer+=('--connect=qemu:///system')
+    virt_viewer+=('--hotkeys=release-cursor=alt+enter')
+    virt_viewer+=('--wait')
+    GDK_BACKEND=x11 command "${virt_viewer[@]}" "$@" >> ~/.virt_viewer.log 2>&1 &
 else
-  echo -e "\e[1;31mError\e[0m: virt-viewer executable not found."
-  exit 1
+    echo -e "\e[1;31mError\e[0m: virt-viewer executable not found."
+    exit 1
 fi

@@ -3,33 +3,33 @@
 # Show command's help page with syntax highlighting
 
 if command -v bat >/dev/null 2>&1; then
-  pager_cmd=(bat -plhelp)
+    pager_cmd=(bat -plhelp)
 else
-  pager_cmd=(less)
+    pager_cmd=(less)
 fi
 
 # Number of arguments is one
 if (( "${#@}" == 1 )); then
-  if "$1" --help >/dev/null 2>&1; then
-    "$1" --help | "${pager_cmd[@]}"
-  elif help "$1" >/dev/null 2>&1; then
-    help "$1" | "${pager_cmd[@]}"
-  elif "$1" -h >/dev/null 2>&1; then
-    "$1" -h | "${pager_cmd[@]}"
-  else
-    echo -e "\e[1;31mError\e[0m: no help found for command '$*'"
-    exit 1
-  fi
+    if "$1" --help >/dev/null 2>&1; then
+        "$1" --help | "${pager_cmd[@]}"
+    elif help "$1" >/dev/null 2>&1; then
+        help "$1" | "${pager_cmd[@]}"
+    elif "$1" -h >/dev/null 2>&1; then
+        "$1" -h | "${pager_cmd[@]}"
+    else
+        echo -e "\e[1;31mError\e[0m: no help found for command '$*'"
+        exit 1
+    fi
 # Number of arguments is greater than one
 elif (( "${#@}" > 1 )); then
-  if "$1" "help" "${@:2}" >/dev/null 2>&1; then
-    "$1" "help" "${@:2}" | "${pager_cmd[@]}"
-  elif "$@" --help >/dev/null 2>&1; then
-    "$@" --help | "${pager_cmd[@]}"
-  else
-    echo -e "\e[1;31mError\e[0m: no help found, try 'man $*'"
-    exit 1
-  fi
+    if "$1" "help" "${@:2}" >/dev/null 2>&1; then
+        "$1" "help" "${@:2}" | "${pager_cmd[@]}"
+    elif "$@" --help >/dev/null 2>&1; then
+        "$@" --help | "${pager_cmd[@]}"
+    else
+        echo -e "\e[1;31mError\e[0m: no help found, try 'man $*'"
+        exit 1
+    fi
 else
-  echo "Usage: h [COMMAND] [SUBCOMMAND]" | "${pager_cmd[@]}"
+    echo "Usage: h [COMMAND] [SUBCOMMAND]" | "${pager_cmd[@]}"
 fi
