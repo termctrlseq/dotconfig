@@ -123,7 +123,7 @@ set path+=~/.local/**
 set path+=~/.vim/**
 set path+=~/.ipython/**
 set pumheight=10    " Autocompletion menu max height
-set previewheight=10 " Default height for a preview window.
+set previewheight=12 " Default height for a preview window.
 set cursorline      " highlight current line
 set wildmenu        " on pressing <TAB> the possible matches are shown.
 set encoding=utf-8  " encoding used inside Vim
