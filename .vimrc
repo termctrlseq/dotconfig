@@ -76,8 +76,8 @@ endif
 augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+  " For all files set 'textwidth' to 78 characters.
+  autocmd FileType * setlocal textwidth=78
 
   " Set indentation and textwidth
   autocmd FileType vim,toml,html,xml setlocal tabstop=2 shiftwidth=2
