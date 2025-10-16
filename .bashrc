@@ -11,7 +11,7 @@ alias grep='grep --color=auto'
 # see bash(1)
 export HISTCONTROL='erasedups:ignorespace'
 export HISTSIZE=9999
-export HISTFILE='~/.bash_history'
+export HISTFILE=~/.bash_history
 export HISTTIMEFORMAT="%F %T "
 shopt -s histappend globstar failglob
 
