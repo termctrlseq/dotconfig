@@ -17,7 +17,6 @@ shopt -s histappend globstar failglob
 export EDITOR='vim'
 export PAGER='bat -p'
 export LESS='-R --mouse --wheel-lines=3' 
-m() { man "$@" | vim +MANPAGER --not-a-term -; }
 
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
