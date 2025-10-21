@@ -74,7 +74,7 @@ command -v uv >/dev/null 2>&1 &&\
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
-PS0="\e[2 q" # block cursor
+PS0="\e[2 q\e]112\a" # block cursor, reset color
 # Primary prompt
 PS1="\W \$ "
 # Continuation prompt
