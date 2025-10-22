@@ -147,8 +147,6 @@ let mapleader = ' '
 let &t_SI = "\e[6 q" " start insert mode (bar cursor shape)
 let &t_EI = "\e[2 q" " end insert or replace mode (block cursor shape)
 
-" All possible python highlighting
-let python_highlight_all = 1
 
 " COLORSCHEMES:
 colorscheme spx
