@@ -147,6 +147,10 @@ let mapleader = ' '
 let &t_SI = "\e[6 q" " start insert mode (bar cursor shape)
 let &t_EI = "\e[2 q" " end insert or replace mode (block cursor shape)
 
+" Reset cursor color
+if expand('%:p:h') == '/tmp'
+  silent !echo -ne "\e]112\a"
+endif
 
 " COLORSCHEMES:
 colorscheme spx
