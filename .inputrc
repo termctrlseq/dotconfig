@@ -22,3 +22,5 @@ set skip-completed-text on
 
 "\em": menu-complete
 "\et": transpose-words
+"\C-q": upcase-word
+"\eu": "\ebi\C-q" # upcase previous word
