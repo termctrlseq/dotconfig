@@ -18,6 +18,9 @@ export EDITOR='vim'
 export PAGER='bat -p'
 export LESS='-R --mouse --wheel-lines=3' 
 
+# Ignore $HOME/.git when in subdirectories
+export GIT_CEILING_DIRECTORIES="$HOME"
+
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 # Ctrl-o to quickly switch emacs/vi modes
