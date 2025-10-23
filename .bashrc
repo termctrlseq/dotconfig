@@ -27,6 +27,22 @@ set -o vi # Bash vi mode
 bind -m vi-command '"\C-o": emacs-editing-mode'
 bind -m vi-insert  '"\C-o": emacs-editing-mode'
 bind -m emacs      '"\C-o": vi-editing-mode'
+# Completion
+bind -m vi-command '"\t": complete'
+bind -m vi-command '"\em": menu-complete'
+bind -m vi-insert  '"\em": menu-complete'
+# Perform shell word expansions
+bind -m vi-command '"\C-e": shell-expand-line'
+bind -m vi-insert  '"\C-e": shell-expand-line'
+# Drag the word before point past the word after point
+bind -m vi-command '"\et": transpose-words'
+bind -m vi-insert  '"\et": transpose-words'
+# Uppercase the current (or following) word
+bind -m vi-command '"\C-q": upcase-word'
+bind -m vi-insert  '"\C-q": upcase-word'
+bind -m vi-command '"\eu": "mab\C-q`a"' # uppercase previous (or current) word
+bind -m vi-insert  '"\eu": "\ebi\C-q"' # uppercase previous word
+
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
 bind -m vi-command -x '"\eh": run-help'
