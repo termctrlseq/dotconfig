@@ -23,3 +23,4 @@ set skip-completed-text on
 "\et": transpose-words
 "\C-q": upcase-word
 "\eu": "\ebi\C-q" # upcase previous word
+"\C-e": shell-expand-line
