@@ -28,9 +28,10 @@ bind -m vi-command '"\C-o": emacs-editing-mode'
 bind -m vi-insert  '"\C-o": emacs-editing-mode'
 bind -m emacs      '"\C-o": vi-editing-mode'
 # Completion
-bind -m vi-command '"\t": complete'
-bind -m vi-command '"\em": menu-complete'
-bind -m vi-insert  '"\em": menu-complete'
+bind -m vi-command '"\em": complete'
+bind -m vi-insert  '"\em": complete'
+bind -m vi-command '"\t": menu-complete'
+bind -m vi-insert  '"\t": menu-complete'
 # Perform shell word expansions
 bind -m vi-command '"\C-e": shell-expand-line'
 bind -m vi-insert  '"\C-e": shell-expand-line'
