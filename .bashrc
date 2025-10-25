@@ -23,26 +23,27 @@ export GIT_CEILING_DIRECTORIES="$HOME"
 
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
+
 # Ctrl-o to quickly switch emacs/vi modes
 bind -m vi-command '"\C-o": emacs-editing-mode'
 bind -m vi-insert  '"\C-o": emacs-editing-mode'
 bind -m emacs      '"\C-o": vi-editing-mode'
 # Completion
-bind -m vi-command '"\em": complete'
-bind -m vi-insert  '"\em": complete'
-bind -m vi-command '"\t": menu-complete'
-bind -m vi-insert  '"\t": menu-complete'
+bind -m vi-command '"\t": complete'
+bind -m vi-insert  '"\t": complete'
 # Perform shell word expansions
-bind -m vi-command '"\C-e": shell-expand-line'
-bind -m vi-insert  '"\C-e": shell-expand-line'
+bind -m vi-command '"\C-f": shell-expand-line'
+bind -m vi-insert  '"\C-f": shell-expand-line'
 # Drag the word before point past the word after point
-bind -m vi-command '"\et": transpose-words'
-bind -m vi-insert  '"\et": transpose-words'
+bind -m vi-command '"\C-t": transpose-words'
+bind -m vi-insert  '"\C-t": transpose-words'
 # Uppercase the current (or following) word
 bind -m vi-command '"\C-q": upcase-word'
 bind -m vi-insert  '"\C-q": upcase-word'
 bind -m vi-command '"\eu": "mab\C-q`a"' # uppercase previous (or current) word
 bind -m vi-insert  '"\eu": "\ebi\C-q"' # uppercase previous word
+
+bind -m vi-command '"\ee": export-completions'
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
