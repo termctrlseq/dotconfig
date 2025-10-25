@@ -12,7 +12,7 @@ alias grep='grep --color=auto'
 export HISTCONTROL='erasedups:ignorespace'
 export HISTSIZE=9999
 export HISTTIMEFORMAT="%F %T "
-shopt -s histappend globstar failglob
+shopt -s histappend globstar
 
 export EDITOR='vim'
 export PAGER='bat -p'
