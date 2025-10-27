@@ -40,8 +40,11 @@ bind -m vi-insert  '"\C-t": transpose-words'
 # Uppercase the current (or following) word
 bind -m vi-command '"\C-q": upcase-word'
 bind -m vi-insert  '"\C-q": upcase-word'
-bind -m vi-command '"\eu": "mab\C-q`a"' # uppercase previous (or current) word
-bind -m vi-insert  '"\eu": "\ebi\C-q"' # uppercase previous word
+# Uppercase previous (or current) word
+bind -m vi-command '"\eu": "mab\C-q`a"'
+bind -m vi-insert  '"\eu": "\ebi\C-q"'
+# Clear screen
+bind -m vi-command '"\C-\M-l": clear-screen'
 
 bind -m vi-command '"\ee": export-completions'
 
