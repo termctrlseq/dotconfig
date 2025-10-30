@@ -71,7 +71,8 @@ command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
-    export BAT_STYLE="changes,header,numbers"
+    export BAT_STYLE='changes,header,numbers'
+    alias pydoc='BAT_STYLE=plain pydoc'
     if command -v batman >/dev/null 2>&1; then
         alias man='BAT_STYLE=plain batman'
         export BATPIPE=color
@@ -79,9 +80,9 @@ if command -v bat >/dev/null 2>&1; then
         eval "$(batman --export-env)"
     fi
     if [[ -f ~/.config/bat/themes/My-Theme.tmTheme ]]; then
-        export BAT_THEME="My-Theme"
+        export BAT_THEME='My-Theme'
     else
-        export BAT_THEME="base16"
+        export BAT_THEME='base16'
     fi
 fi
 
