@@ -17,6 +17,7 @@ $endif
 
 set colored-completion-prefix on
 set colored-stats on
+set completion-display-width 1
 set completion-map-case on
 set history-size 500
 set revert-all-at-newline on
