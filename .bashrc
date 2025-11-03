@@ -57,6 +57,11 @@ bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
 
+# start ptpython with Alt-p
+start-ptpython() { pt.py; }
+bind -m vi-command -x '"\ep": start-ptpython'
+bind -m vi-insert  -x '"\ep": start-ptpython'
+
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
     export PATH="$HOME/.local/bin:$PATH"
