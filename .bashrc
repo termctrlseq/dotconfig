@@ -58,7 +58,12 @@ bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
 
 # start ptpython with Alt-p
-start-ptpython() { pt.py; }
+start-ptpython() {
+    local mode="\[\e[1;38;5;8m\][i]"
+    pt_v2.py "${mode@P}${PS1@P}"
+    local pt_tmp="/tmp/pt.tmp"
+    [[ -f "$pt_tmp" ]] && read READLINE_LINE < "$pt_tmp" && ydotool key 28:1 28:0 
+}
 bind -m vi-command -x '"\ep": start-ptpython'
 bind -m vi-insert  -x '"\ep": start-ptpython'
 
