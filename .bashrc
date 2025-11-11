@@ -35,7 +35,7 @@ bind -m vi-insert  '"\t": complete'
 # Perform history expansions
 bind -m vi-command '"\ef": history-expand-line'
 bind -m vi-insert  '"\ef": history-expand-line'
-# Perform history and glob expansions
+# Perform history and glob expansions TODO: dabbrev-expand
 bind -m vi-command '"\C-f": "\ef\e*"'
 bind -m vi-insert  '"\C-f": "\ef\e*"'
 # Drag the word before point past the word after point
@@ -49,8 +49,9 @@ bind -m vi-command '"\eu": "mab\C-q`a"'
 bind -m vi-insert  '"\eu": "\ebi\C-q"'
 # Clear screen
 bind -m vi-command '"\C-\M-l": clear-screen'
-
-bind -m vi-command '"\ee": export-completions'
+# bind -m vi-command '"\ee": export-completions'
+bind -m vi-command '"\ee": execute-named-command'
+bind -m vi-insert  '"\ee": execute-named-command'
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
