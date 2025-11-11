@@ -53,6 +53,10 @@ bind -m vi-command '"\C-\M-l": clear-screen'
 bind -m vi-command '"\ee": execute-named-command'
 bind -m vi-insert  '"\ee": execute-named-command'
 
+# completion from history
+bind -m vi-command '"\ed": dabbrev-expand'
+bind -m vi-insert  '"\ed": dabbrev-expand'
+
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
 bind -m vi-command -x '"\eh": run-help'
