@@ -57,6 +57,10 @@ bind -m vi-insert  '"\ee": execute-named-command'
 bind -m vi-command '"\ed": dabbrev-expand'
 bind -m vi-insert  '"\ed": dabbrev-expand'
 
+# forward/backward a word
+bind -m vi-insert  '"\C-f": forward-word'
+bind -m vi-insert  '"\C-b": backward-word'
+
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
 bind -m vi-command -x '"\eh": run-help'
