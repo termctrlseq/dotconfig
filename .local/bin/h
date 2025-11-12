@@ -9,7 +9,7 @@ else
 fi
 
 # Number of arguments is one
-if (( "${#@}" == 1 )); then
+if (( "$#" == 1 )); then
     if "$1" --help >/dev/null 2>&1; then
         "$1" --help | "${pager_cmd[@]}"
     elif help "$1" >/dev/null 2>&1; then
@@ -21,7 +21,7 @@ if (( "${#@}" == 1 )); then
         exit 1
     fi
 # Number of arguments is greater than one
-elif (( "${#@}" > 1 )); then
+elif (( "$#" > 1 )); then
     if "$1" "help" "${@:2}" >/dev/null 2>&1; then
         "$1" "help" "${@:2}" | "${pager_cmd[@]}"
     elif "$@" --help >/dev/null 2>&1; then
