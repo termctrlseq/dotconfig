@@ -32,12 +32,9 @@ bind -m emacs      '"\C-o": vi-editing-mode'
 # Completion
 bind -m vi-command '"\t": complete'
 bind -m vi-insert  '"\t": complete'
-# Perform history expansions
-bind -m vi-command '"\ef": history-expand-line'
-bind -m vi-insert  '"\ef": history-expand-line'
-# Perform history and glob expansions TODO: dabbrev-expand
-bind -m vi-command '"\C-f": "\ef\e*"'
-bind -m vi-insert  '"\C-f": "\ef\e*"'
+# Perform history and glob expansions
+bind -m vi-command '"\ef": "\eehistory-expand-line\C-m\e*"'
+bind -m vi-insert  '"\ef": "\eehistory-expand-line\C-m\e*"'
 # Drag the word before point past the word after point
 bind -m vi-command '"\C-t": transpose-words'
 bind -m vi-insert  '"\C-t": transpose-words'
