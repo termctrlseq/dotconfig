@@ -25,54 +25,7 @@ export GIT_CEILING_DIRECTORIES="$HOME"
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 
-# Ctrl-o to quickly switch emacs/vi modes
-bind -m vi-command '"\C-o": emacs-editing-mode'
-bind -m vi-insert  '"\C-o": emacs-editing-mode'
-bind -m emacs      '"\C-o": vi-editing-mode'
-# Completion
-bind -m vi-command '"\t": complete'
-bind -m vi-insert  '"\t": complete'
-# Perform history and glob expansions
-bind -m vi-command '"\ef": "\eehistory-expand-line\C-m\e*"'
-bind -m vi-insert  '"\ef": "\eehistory-expand-line\C-m\e*"'
-# Drag the word before point past the word after point
-bind -m vi-command '"\C-t": transpose-words'
-bind -m vi-insert  '"\C-t": transpose-words'
-# Uppercase the current (or following) word
-bind -m vi-command '"\C-q": upcase-word'
-bind -m vi-insert  '"\C-q": upcase-word'
-# Uppercase previous (or current) word
-bind -m vi-command '"\eu": "mab\C-q`a"'
-bind -m vi-insert  '"\eu": "\ebi\C-q"'
-# Clear screen
-bind -m vi-command '"\C-\M-l": clear-screen'
-# bind -m vi-command '"\ee": export-completions'
-bind -m vi-command '"\ee": execute-named-command'
-bind -m vi-insert  '"\ee": execute-named-command'
-
-# completion from history
-bind -m vi-command '"\ed": dabbrev-expand'
-bind -m vi-insert  '"\ed": dabbrev-expand'
-
-# forward/backward a word
-bind -m vi-insert  '"\C-f": forward-word'
-bind -m vi-insert  '"\C-b": backward-word'
-
-# invoke the manual for the command preceding the cursor by pressing Alt+h.
-run-help() { h $READLINE_LINE; }
-bind -m vi-command -x '"\eh": run-help'
-bind -m vi-insert  -x '"\eh": run-help'
-bind -m emacs      -x '"\eh": run-help'
-
-# start ptpython with Alt-p
-start-ptpython() {
-    local mode="\[\e[1;38;5;8m\][i]"
-    pt_v2.py "${mode@P}${PS1@P}"
-    local pt_tmp="/tmp/pt.tmp"
-    [[ -f "$pt_tmp" ]] && read READLINE_LINE < "$pt_tmp" && ydotool key 28:1 28:0 
-}
-bind -m vi-command -x '"\ep": start-ptpython'
-bind -m vi-insert  -x '"\ep": start-ptpython'
+source ~/.bindrc
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
