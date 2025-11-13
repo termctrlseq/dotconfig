@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
+command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 
 # see bash(1)
 export HISTCONTROL='erasedups:ignorespace'
@@ -35,9 +36,6 @@ source ~/.bindrc
 # => dircolors --print-database > ~/.dir_colors
 # Edit ~/.dir_colors as needed
 [[ -f "$HOME/.dir_colors" ]] && eval "$(dircolors "$HOME/.dir_colors")"
-
-command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
-command -v tgpt >/dev/null 2>&1 && alias tgpt='tgpt --log ~/tgpt_log.md'
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
