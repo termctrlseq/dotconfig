@@ -11,8 +11,8 @@ bind -m emacs      '"\C-o": vi-editing-mode'
 bind -m vi-command '"\t": complete'
 bind -m vi-insert  '"\t": complete'
 # Perform history and glob expansions
-bind -m vi-command '"\ef": "\eehistory-expand-line\C-m\e*"'
-bind -m vi-insert  '"\ef": "\eehistory-expand-line\C-m\e*"'
+bind -m vi-command '"\ef": history-expand-line'
+bind -m vi-insert  '"\ef": history-expand-line'
 # Drag the word before point past the word after point
 bind -m vi-command '"\C-t": transpose-words'
 bind -m vi-insert  '"\C-t": transpose-words'
