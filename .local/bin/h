@@ -10,10 +10,10 @@ fi
 
 # Number of arguments is one
 if (( "$#" == 1 )); then
-    if "$1" --help >/dev/null 2>&1; then
-        "$1" --help | "${pager_cmd[@]}"
-    elif help "$1" >/dev/null 2>&1; then
+    if help "$1" >/dev/null 2>&1; then
         help "$1" | "${pager_cmd[@]}"
+    elif "$1" --help >/dev/null 2>&1; then
+        "$1" --help | "${pager_cmd[@]}"
     elif "$1" -h >/dev/null 2>&1; then
         "$1" -h | "${pager_cmd[@]}"
     else
