@@ -17,11 +17,11 @@ bind -m vi-insert  '"\ef": history-expand-line'
 bind -m vi-command '"\C-t": transpose-words'
 bind -m vi-insert  '"\C-t": transpose-words'
 # Uppercase the current (or following) word
-bind -m vi-command '"\C-q": upcase-word'
-bind -m vi-insert  '"\C-q": upcase-word'
+bind -m vi-command '"\M-q": upcase-word'
+bind -m vi-insert  '"\M-q": upcase-word'
 # Uppercase previous (or current) word
-bind -m vi-command '"\C-b": "mab\C-q`a"'
-bind -m vi-insert  '"\C-b": "\ebi\C-q"'
+bind -m vi-command '"\C-b": "mab\M-q`a"'
+bind -m vi-insert  '"\C-b": "\ebi\M-q"'
 # Clear screen
 bind -m vi-command '"\C-\M-l": clear-screen'
 
