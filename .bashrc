@@ -27,7 +27,6 @@ stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 
 source ~/.bindrc
-source ~/.autocomprc
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
