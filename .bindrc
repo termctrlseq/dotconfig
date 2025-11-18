@@ -3,10 +3,6 @@
 # ~/.bindrc
 #
 
-# Ctrl-o to quickly switch emacs/vi modes
-bind -m vi-command '"\C-o": emacs-editing-mode'
-bind -m vi-insert  '"\C-o": emacs-editing-mode'
-bind -m emacs      '"\C-o": vi-editing-mode'
 # Completion
 bind -m vi-command '"\t": complete'
 bind -m vi-insert  '"\t": complete'
