@@ -26,7 +26,7 @@ export GIT_CEILING_DIRECTORIES="$HOME"
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 
-source ~/.bindrc
+source "$HOME/.bindrc"
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
@@ -77,16 +77,18 @@ PS1="\W \$ "
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
 update_ps1() {
     local exit_code="$?"
-    if (( $exit_code != 0 )); then
-        if (( $exit_code > 128 )); then
-            local sig="$(kill -l $exit_code 2>/dev/null)"
+    if (( exit_code != 0 )); then
+        if (( exit_code > 128 )); then
+            local sig
+            sig="$(kill -l $exit_code 2>/dev/null)"
             [[ -n "$sig" ]] && exit_code="SIG$sig"
         fi
         exit_code="\[\e[1;31m\]$exit_code\[\e[0m\] "
     else
         exit_code=" "
     fi
-    local jobs_count="$(jobs -p | wc -l)"
+    local jobs_count
+    jobs_count="$(jobs -p | wc -l)"
     local jobs_str=
     (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]"
     local venv=
@@ -105,7 +107,6 @@ update_ps1() {
     PS1+="$exit_code"
     PS1+="$venv"
     PS1+="$cwd"
-    PS1+="$git_str"
     PS1+="$is_ssh"
     PS1+="$jobs_str"
     PS1+="\[\e[1;38;5;66m\]\$"
