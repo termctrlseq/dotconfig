@@ -27,7 +27,7 @@ bind -m vi-insert  '"\ed": dabbrev-expand'
 bind -m vi-command '"\ee": execute-named-command'
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
-run-help() { h "$READLINE_LINE"; }
+run-help() { h $READLINE_LINE; }
 bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
