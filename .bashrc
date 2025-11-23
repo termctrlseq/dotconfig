@@ -29,8 +29,8 @@ set -o vi # Bash vi mode
 source "$HOME/.bindrc"
 
 # add ~/.local/bin to PATH if not in it
-[[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] && \
-    export PATH="$HOME/.local/bin:$PATH"
+[[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] \
+    && export PATH="$HOME/.local/bin:$PATH"
 
 # Set LS_COLORS
 # => dircolors --print-database > ~/.dir_colors
@@ -58,15 +58,15 @@ fi
 [[ -v WAYLAND_DISPLAY ]] || export XCURSOR_THEME=Adwaita
 
 # rustup shell setup
-[[ -x /usr/bin/cargo && ":${PATH}:" != *:"$HOME/.cargo/bin":* ]] && \
-    export PATH="$HOME/.cargo/bin:$PATH"
+[[ -x /usr/bin/cargo && ":${PATH}:" != *:"$HOME/.cargo/bin":* ]] \
+    && export PATH="$HOME/.cargo/bin:$PATH"
 # Mocword - Predict next words
-command -v mocword >/dev/null 2>&1 &&\
-    export MOCWORD_DATA="$HOME/.local/share/mocword/mocword.sqlite"
+command -v mocword >/dev/null 2>&1 \
+    && export MOCWORD_DATA="$HOME/.local/share/mocword/mocword.sqlite"
 
 # Enable shell autocompletion for uv commands
-command -v uv >/dev/null 2>&1 &&\
-    eval "$(uv generate-shell-completion bash)"
+command -v uv >/dev/null 2>&1 \
+    && eval "$(uv generate-shell-completion bash)"
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
