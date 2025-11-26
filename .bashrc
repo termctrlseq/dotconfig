@@ -26,7 +26,8 @@ export GIT_CEILING_DIRECTORIES="$HOME"
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set -o vi # Bash vi mode
 
-source "$HOME/.bindrc"
+# Readline bindings
+[[ -f "$HOME/.bindrc" ]] && source "$HOME/.bindrc"
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] \
