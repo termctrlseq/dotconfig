@@ -33,9 +33,10 @@ source "$HOME/.bindrc"
     && export PATH="$HOME/.local/bin:$PATH"
 
 # Set LS_COLORS
-# => dircolors --print-database > ~/.dir_colors
-# Edit ~/.dir_colors as needed
-[[ -f "$HOME/.dir_colors" ]] && eval "$(dircolors "$HOME/.dir_colors")"
+if ! [[ -f "$HOME/.dir_colors" ]]; then
+    dircolors --print-database > ~/.dir_colors
+fi
+eval "$(dircolors "$HOME/.dir_colors")"
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
