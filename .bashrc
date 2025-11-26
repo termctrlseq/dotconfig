@@ -7,7 +7,6 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 
 # see bash(1)
@@ -56,8 +55,12 @@ if command -v bat >/dev/null 2>&1; then
     fi
 fi
 
-# X11 cursor theme
-[[ -v WAYLAND_DISPLAY ]] || export XCURSOR_THEME=Adwaita
+if [[ -v WAYLAND_DISPLAY ]]; then
+    alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
+else
+    # X11 cursor theme
+    export XCURSOR_THEME=Adwaita
+fi
 
 # rustup shell setup
 [[ -x /usr/bin/cargo && ":${PATH}:" != *:"$HOME/.cargo/bin":* ]] \
