@@ -48,8 +48,8 @@ if command -v bat >/dev/null 2>&1; then
         eval "$(batpipe)"
         eval "$(batman --export-env)"
     fi
-    if [[ -f ~/.config/bat/themes/My-Theme.tmTheme ]]; then
-        export BAT_THEME='My-Theme'
+    if [[ -f ~/.config/bat/themes/Spx.tmTheme ]]; then
+        export BAT_THEME='Spx'
     else
         export BAT_THEME='base16'
     fi
