@@ -7,6 +7,7 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 
 # see bash(1)
@@ -55,9 +56,7 @@ if command -v bat >/dev/null 2>&1; then
     fi
 fi
 
-if [[ -v WAYLAND_DISPLAY ]]; then
-    alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
-else
+if ! [[ -v WAYLAND_DISPLAY ]]; then
     # X11 cursor theme
     export XCURSOR_THEME=Adwaita
 fi
