@@ -60,6 +60,7 @@ if [[ -v WAYLAND_DISPLAY ]]; then
 else
     # X11 cursor theme
     export XCURSOR_THEME=Adwaita
+    alias virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 fi
 
 # rustup shell setup
