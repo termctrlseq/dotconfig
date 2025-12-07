@@ -166,3 +166,11 @@ source ~/.vim/bindings.vim
 
 " This plugin displays a manual page in a nice way.
 runtime ftplugin/man.vim
+" Commenting and un-commenting text.
+packadd comment
+" Automatically execute :nohlsearch after 'updatetime' or getting into
+" Insert mode.
+set hlsearch
+packadd nohlsearch
+" briefly highlights the affected region of the last yank command.
+packadd hlyank
