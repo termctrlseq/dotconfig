@@ -14,9 +14,9 @@ bind -m vi-command '"\C-t": transpose-words'
 bind -m vi-insert  '"\C-t": transpose-words'
 # Uppercase previous (or current) word
 bind -m vi-command \
-    '"\C-b": "mab\eeupcase-word\C-m\eebackward-word\C-m\eeupcase-word\C-m`a"'
+    '"\C-b": "mab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`a"'
 bind -m vi-insert  \
-    '"\C-b": "\emab\eeupcase-word\C-m\eebackward-word\C-m\eeupcase-word\C-m`aa"'
+    '"\C-b": "\emab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`aa"'
 # Clear screen
 bind -m vi-command '"\C-\M-l": clear-screen'
 
