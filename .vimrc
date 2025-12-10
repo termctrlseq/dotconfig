@@ -68,27 +68,6 @@ else
   endif
 endif
 
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  au!
-
-  " For all files set 'textwidth' to 78 characters.
-  autocmd FileType * setlocal textwidth=78
-
-  " Set indentation and textwidth
-  autocmd FileType vim,tmux,toml,html,xml setlocal tabstop=2 shiftwidth=2
-  autocmd FileType c,python,sh setlocal tabstop=4 shiftwidth=4
-
-  " signcolumn breaks formatting of man pages
-  autocmd FileType man setlocal signcolumn=no
-
-  " Quickfix list
-  autocmd FileType qf setlocal norelativenumber
-
-  " otherwise formatoptions get overridden
-  autocmd FileType * set formatoptions=q
-augroup END
-
 " Add optional packages.
 "
 " The matchit plugin makes the % command work better, but it is not backwards
@@ -107,8 +86,8 @@ set smartcase       " ignore case when the pattern contains lowercase letters on
 set autowrite       " write to file when changing buffer
 set hidden          " buffer becomes hidden when it is abandoned
 set expandtab       " Use the appropriate number of spaces to insert a <Tab>
-" set tabstop=4       " number of spaces a <TAB> stands for
-" set shiftwidth=4    " number of spaces for each step of indent
+set tabstop=4       " number of spaces a <TAB> stands for
+set shiftwidth=4    " number of spaces for each step of indent
 set scrolloff=3     " Min number of screen lines to keep above and below the cursor.
 set backupcopy=yes  " Preserves file birth time
 " Time in milliseconds to wait for a key code or mapped key sequence to complete.
@@ -136,6 +115,27 @@ set linebreak " wrap long lines at a character in 'breakat'
 set showbreak=>>>> " String to put at the start of lines that have been wrapped.
 set shortmess+=F
 set dictionary=spell
+
+" Put these in an autocmd group, so that we can delete them easily.
+augroup vimrcEx
+  au!
+
+  " For all files set 'textwidth' to 78 characters.
+  autocmd FileType * setlocal textwidth=78
+
+  " Set indentation and textwidth
+  autocmd FileType vim,tmux,toml,html,xml setlocal tabstop=2 shiftwidth=2
+  autocmd FileType c,python,sh setlocal tabstop=4 shiftwidth=4
+
+  " signcolumn breaks formatting of man pages
+  autocmd FileType man setlocal signcolumn=no
+
+  " Quickfix list
+  autocmd FileType qf setlocal norelativenumber
+
+  " otherwise formatoptions get overridden
+  autocmd FileType * set formatoptions=q
+augroup END
 
 " Change leader key
 let mapleader = ' '
