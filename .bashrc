@@ -10,7 +10,7 @@ alias grep='grep --color=auto'
 command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 
 # see bash(1)
-export HISTCONTROL='erasedups:ignorespace'
+export HISTCONTROL='erasedups'
 export HISTSIZE=9999
 export HISTTIMEFORMAT="%F %T "
 shopt -s histappend globstar
