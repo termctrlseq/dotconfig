@@ -135,6 +135,9 @@ augroup vimrcEx
 
   " otherwise formatoptions get overridden
   autocmd FileType * set formatoptions=q
+
+  " Kitty
+	autocmd Filetype kitty setlocal commentstring=#\ %s
 augroup END
 
 " Change leader key
