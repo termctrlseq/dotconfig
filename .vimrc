@@ -2,60 +2,6 @@
 " ~/.vimrc
 "
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Keep Plugin commands between vundle#begin/end.
-
-
-" Lean & mean status/tabline for vim that's light as air.
-Plugin 'vim-airline/vim-airline'
-
-" Vim Tmux Navigator
-Plugin 'christoomey/vim-tmux-navigator'
-
-" NERDTree - a file system explorer for the Vim editor.
-Plugin 'preservim/nerdtree'
-
-" Changes parentheses, brackets, quotes, XML tags, and more.
-Plugin 'surround.vim'
-
-" Async autocompletion and linting
-Plugin 'prabirshrestha/asyncomplete.vim'
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'prabirshrestha/asyncomplete-lsp.vim'
-Plugin 'prabirshrestha/asyncomplete-file.vim'
-Plugin 'kg8m/asyncomplete-mocword.vim'
-Plugin 'prabirshrestha/async.vim'
-Plugin 'keremc/asyncomplete-clang.vim'
-Plugin 'Shougo/neco-vim'
-Plugin 'prabirshrestha/asyncomplete-necovim.vim'
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-syntax on
-
 " Get the defaults that most users want.
 source $VIMRUNTIME/defaults.vim
 
@@ -78,43 +24,40 @@ if has('syntax') && has('eval')
   packadd! matchit
 endif
 
-" General vim setup
-set number          " Print the line number in front of each line.
-set splitbelow      " put the new window below the current
-set ignorecase      " the case of normal letters is ignored
-set smartcase       " ignore case when the pattern contains lowercase letters only
+" General setup
+set autoread " if a file has been changed outside of Vim read it again.
 set autowrite       " write to file when changing buffer
-set hidden          " buffer becomes hidden when it is abandoned
-set expandtab       " Use the appropriate number of spaces to insert a <Tab>
-set tabstop=4       " number of spaces a <TAB> stands for
-set shiftwidth=4    " number of spaces for each step of indent
-set scrolloff=3     " Min number of screen lines to keep above and below the cursor.
 set backupcopy=yes  " Preserves file birth time
-" Time in milliseconds to wait for a key code or mapped key sequence to complete.
-set timeoutlen=1500
-set path+=.,~/**      " Provides tab-completion for all file related tasks
+set completeopt=menuone,noinsert,noselect,preview " ins mode completion
+set cursorline      " highlight current line
+set dictionary=spell " when spell is set use it for keyword completion
+set encoding=utf-8  " encoding used inside Vim
+set expandtab       " Use the appropriate number of spaces to insert a <Tab>
+set hidden          " buffer becomes hidden when it is abandoned
+set ignorecase      " the case of normal letters is ignored
+set linebreak       " wrap long lines at a character in 'breakat'
+set number          " Print the line number in front of each line.
+set path+=.,~/**    " Provides tab-completion for all file related tasks
 set path+=~/.config/**
+set path+=~/.ipython/**
 set path+=~/.local/**
 set path+=~/.vim/**
-set path+=~/.ipython/**
-set pumheight=10    " Autocompletion menu max height
 set previewheight=12 " Default height for a preview window.
-set cursorline      " highlight current line
-set encoding=utf-8  " encoding used inside Vim
+set pumheight=10    " Autocompletion menu max height
+set scrolloff=3     " Min number of lines to keep above and below the cursor.
+set shellcmdflag=-ic " use interactive shell for external commands
+set shiftwidth=4    " number of spaces for each step of indent
+set shortmess+=F
+set showbreak=>>>>  " String at the start of lines that have been wrapped.
 set signcolumn=yes  " draw the signcolumn
-" list of options for Insert mode completion
-set completeopt=menuone,noinsert,noselect,preview
+set smartcase       " ignore case when pattern contains lowercase letters only
+set splitbelow      " put the new window below the current
+set tabstop=4       " number of spaces a <TAB> stands for
+set tags=./tags;~/tags " if tags file not found in cwd, look in parent dirs
+set timeoutlen=1500 " Time in msec to wait for a key sequence to complete.
 if exists('$TMUX')
   set ttymouse=xterm2 " vim mouse support inside tmux
 endif
-set tags=./tags;~/tags    " if tags file not found in cwd, look in parent dirs
-" use interactive shell for external commands (loads .bashrc)
-set shellcmdflag=-ic
-set autoread " if a file has been changed outside of Vim read it again.
-set linebreak " wrap long lines at a character in 'breakat'
-set showbreak=>>>> " String to put at the start of lines that have been wrapped.
-set shortmess+=F
-set dictionary=spell
 
 " Put these in an autocmd group, so that we can delete them easily.
 augroup vimrcEx
@@ -170,11 +113,10 @@ source ~/.vim/bindings.vim
 " This plugin displays a manual page in a nice way.
 runtime ftplugin/man.vim
 " Commenting and un-commenting text.
-packadd comment
-" Automatically execute :nohlsearch after 'updatetime' or getting into
-" Insert mode.
-packadd nohlsearch
+packadd! comment
+" Auto exec :nohlsearch after 'updatetime' or getting into insert mode.
+packadd! nohlsearch
 set hlsearch
 set updatetime=2000
 " briefly highlights the affected region of the last yank command.
-packadd hlyank
+packadd! hlyank
