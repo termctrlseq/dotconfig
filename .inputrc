@@ -20,7 +20,6 @@ set colored-stats on
 set completion-display-width 1
 set completion-query-items 45
 set completion-map-case on
-set history-size 500
 set page-completions off
 set revert-all-at-newline on
 set show-all-if-unmodified on
