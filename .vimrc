@@ -14,18 +14,8 @@ else
   endif
 endif
 
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-if has('syntax') && has('eval')
-  packadd! matchit
-endif
-
 " General setup
-set autoread " if a file has been changed outside of Vim read it again.
+set autoread        " if a file has been changed outside of Vim read it again.
 set autowrite       " write to file when changing buffer
 set backupcopy=yes  " Preserves file birth time
 set completeopt=menuone,noinsert,noselect,preview " ins mode completion
@@ -47,7 +37,7 @@ set pumheight=10    " Autocompletion menu max height
 set scrolloff=3     " Min number of lines to keep above and below the cursor.
 set shellcmdflag=-ic " use interactive shell for external commands
 set shiftwidth=4    " number of spaces for each step of indent
-set shortmess+=F
+set shortmess+=scF
 set showbreak=>>>>  " String at the start of lines that have been wrapped.
 set signcolumn=yes  " draw the signcolumn
 set smartcase       " ignore case when pattern contains lowercase letters only
@@ -100,16 +90,15 @@ colorscheme spx
 
 " airline
 source ~/.vim/airline_setup.vim
-
 " asyncomplete
 source ~/.vim/async-lsp.vim
-
 " My functions
 source ~/.vim/functions.vim
-
 " My key bindings
 source ~/.vim/bindings.vim
 
+" The matchit plugin makes the % command work better
+packadd! matchit
 " This plugin displays a manual page in a nice way.
 runtime ftplugin/man.vim
 " Commenting and un-commenting text.
