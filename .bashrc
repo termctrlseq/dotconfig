@@ -110,6 +110,7 @@ update_ps1() {
         is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
     fi
     PS1=
+    PS1+="\[\e[0m\]"
     PS1+="$exit_code"
     PS1+="$venv"
     PS1+="$cwd"
