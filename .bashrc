@@ -18,7 +18,7 @@ shopt -s histappend globstar
 
 export EDITOR='vim'
 export PAGER='bat -p'
-export LESS='-R --mouse'
+export LESS='-R --mouse --wheel-lines=3'
 
 # Ignore $HOME/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="$HOME"
