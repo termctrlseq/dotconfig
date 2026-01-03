@@ -13,11 +13,12 @@ command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
 export HISTCONTROL='erasedups'
 export HISTSIZE=9999
 export HISTTIMEFORMAT="%F %T "
+
 shopt -s histappend globstar
 
 export EDITOR='vim'
 export PAGER='bat -p'
-export LESS='-R --mouse --wheel-lines=3' 
+export LESS='-R --mouse --wheel-lines=3'
 
 # Ignore $HOME/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="$HOME"
@@ -34,7 +35,7 @@ set -o vi # Bash vi mode
 
 # Set LS_COLORS
 if ! [[ -f "$HOME/.dir_colors" ]]; then
-    dircolors --print-database > ~/.dir_colors
+    dircolors --print-database > "$HOME/.dir_colors"
 fi
 eval "$(dircolors "$HOME/.dir_colors")"
 
@@ -48,7 +49,7 @@ if command -v bat >/dev/null 2>&1; then
         eval "$(batpipe)"
         eval "$(batman --export-env)"
     fi
-    if [[ -f ~/.config/bat/themes/Spx.tmTheme ]]; then
+    if [[ -f "$HOME/.config/bat/themes/Spx.tmTheme" ]]; then
         export BAT_THEME='Spx'
     else
         export BAT_THEME='base16'
