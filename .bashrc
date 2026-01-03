@@ -82,7 +82,7 @@ PS0="\e[2 q\e]112\a" # block cursor, reset color
 PS1="\W \$ "
 # Continuation prompt
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
-update_ps1() {
+prompt_command() {
     local exit_code="$?"
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
@@ -121,4 +121,4 @@ update_ps1() {
     PS1+="\[\e[0m\] "
 }
 # executed prior to issuing each primary prompt.
-PROMPT_COMMAND=update_ps1
+PROMPT_COMMAND=prompt_command
