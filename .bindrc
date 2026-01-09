@@ -35,9 +35,9 @@ bind -m emacs      -x '"\eh": run-help'
 # start ptpython with Alt-p
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\]=> \[\e[0m\]"
-    pt_live.py "${pt_prompt@P}"
     local pt_tmp="/tmp/pt.tmp"
-    [[ -f "$pt_tmp" ]] && read -r READLINE_LINE < "$pt_tmp" && ydotool key 28:1 28:0 
+    pt_live.py "${pt_tmp}" "${pt_prompt@P}"
+    [[ -f "$pt_tmp" ]] && read -r READLINE_LINE < "$pt_tmp" && ydotool key 28:1 28:0
 }
 bind -m vi-command -x '"\ep": start-ptpython'
 bind -m vi-insert  -x '"\ep": start-ptpython'
