@@ -20,6 +20,7 @@ shopt -s histappend globstar
 export EDITOR='vim'
 export PAGER='bat -p'
 export LESS='-R --mouse'
+export CDPATH="$HOME:$HOME/Code:$HOME/.config"
 
 # Ignore $HOME/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="$HOME"
