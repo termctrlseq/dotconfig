@@ -1,4 +1,5 @@
 # vim: ft=sh
+# shellcheck disable=SC2016,SC2086
 #
 # ~/.bindrc
 #
@@ -6,9 +7,12 @@
 # Completion
 bind -m vi-command '"\t": complete'
 bind -m vi-insert  '"\t": complete'
-# Perform history and glob expansions
+# Perform history
 bind -m vi-command '"\ef": history-expand-line'
 bind -m vi-insert  '"\ef": history-expand-line'
+# Perform glob expansions
+bind -m vi-command '"\eg": glob-expand-word'
+bind -m vi-insert  '"\eg": glob-expand-word'
 # Drag the word before point past the word after point
 bind -m vi-command '"\C-t": transpose-words'
 bind -m vi-insert  '"\C-t": transpose-words'
