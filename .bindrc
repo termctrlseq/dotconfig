@@ -4,31 +4,34 @@
 # ~/.bindrc
 #
 
-# Completion
-bind -m vi-command '"\t": complete'
-bind -m vi-insert  '"\t": complete'
-# Perform history
-bind -m vi-command '"\ef": history-expand-line'
-bind -m vi-insert  '"\ef": history-expand-line'
+# Attempt to perform completion on the text before point
+bind  -m  vi-command  '"\t":   complete'
+bind  -m  vi-insert   '"\t":   complete'
+# Attempt menu completion from the history list
+bind  -m  vi-command  '"\ed": dabbrev-expand'
+bind  -m  vi-insert   '"\ed": dabbrev-expand'
+
+# Perform history expansion on the current line
+bind  -m  vi-command  '"\ef":  history-expand-line'
+bind  -m  vi-insert   '"\ef":  history-expand-line'
 # Perform glob expansions
-bind -m vi-command '"\eg": glob-expand-word'
-bind -m vi-insert  '"\eg": glob-expand-word'
+bind  -m  vi-command  '"\eg":  glob-expand-word'
+bind  -m  vi-insert   '"\eg":  glob-expand-word'
+
 # Drag the word before point past the word after point
-bind -m vi-command '"\C-t": transpose-words'
-bind -m vi-insert  '"\C-t": transpose-words'
-# Uppercase previous (or current) word
-bind -m vi-command \
-    '"\C-b": "mab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`a"'
-bind -m vi-insert  \
-    '"\C-b": "\emab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`aa"'
+bind  -m  vi-command  '"\C-t": transpose-words'
+bind  -m  vi-insert   '"\C-t": transpose-words'
+
 # Clear screen
-bind -m vi-command '"\C-\M-l": clear-screen'
+bind  -m  vi-command  '"\C-\M-l": clear-screen'
+# Execute readline command
+bind  -m  vi-command  '"\ee": execute-named-command'
 
-# completion from history
-bind -m vi-command '"\ed": dabbrev-expand'
-bind -m vi-insert  '"\ed": dabbrev-expand'
-
-bind -m vi-command '"\ee": execute-named-command'
+# Uppercase previous (or current) word
+bind  -m  vi-command \
+    '"\C -b": "mab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`a" '
+bind  -m  vi-insert  \
+    '"\C -b": "\emab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`aa" '
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
