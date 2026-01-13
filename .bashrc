@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
+command -v virsh >/dev/null 2>&1 && alias virsh='virsh -c qemu:///system'
 
 # see bash(1)
 export HISTCONTROL='erasedups'
