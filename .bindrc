@@ -29,9 +29,9 @@ bind  -m  vi-command  '"\ee": execute-named-command'
 
 # Uppercase previous (or current) word
 bind  -m  vi-command \
-    '"\C -b": "mab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`a" '
+    '"\C-b": "mab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`a" '
 bind  -m  vi-insert  \
-    '"\C -b": "\emab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`aa" '
+    '"\C-b": "\emab\eeupcase-word\C-m`a\eebackward-word\C-m\eeupcase-word\C-m`aa" '
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
