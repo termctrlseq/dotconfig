@@ -44,7 +44,6 @@ eval "$(dircolors "$HOME/.dir_colors")"
 # bat setup
 if command -v bat >/dev/null 2>&1; then
     export BAT_STYLE='changes,header'
-    alias pydoc='BAT_STYLE=plain pydoc'
     if command -v batman >/dev/null 2>&1; then
         alias man='BAT_STYLE=plain batman'
         export BATPIPE=color
