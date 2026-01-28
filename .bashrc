@@ -5,53 +5,53 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
+alias    ls='ls --color=auto'
+alias  grep='grep --color=auto'
 alias pydoc='MANPAGER="vim +MANPAGER --not-a-term -" pydoc'
-command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open'
-command -v virsh >/dev/null 2>&1 && alias virsh='virsh -c qemu:///system'
+command -v xdg-open >/dev/null 2>&1 && alias     o='xdg-open'
+command -v virsh    >/dev/null 2>&1 && alias virsh='virsh -c qemu:///system'
 
 # see bash(1)
-export HISTCONTROL='erasedups'
-export HISTSIZE=9999
+export       HISTSIZE=9999
+export    HISTCONTROL='erasedups'
 export HISTTIMEFORMAT="%F %T "
 
 shopt -s histappend globstar
 
 export EDITOR='vim'
-export PAGER='bat -p'
-export LESS='-R --mouse'
-export CDPATH="$HOME:$HOME/Code:$HOME/.config"
+export  PAGER='bat -p'
+export   LESS='--RAW-CONTROL-CHARS --mouse'
+export CDPATH="${HOME}:${HOME}/Code:${HOME}/.config"
 
-# Ignore $HOME/.git when in subdirectories
-export GIT_CEILING_DIRECTORIES="$HOME"
+# Ignore ${HOME}/.git when in subdirectories
+export GIT_CEILING_DIRECTORIES="${HOME}"
 
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
-set -o vi # Bash vi mode
+set  -o vi # Bash vi mode
 
 # Readline bindings
-[[ -f "$HOME/.bindrc" ]] && source "$HOME/.bindrc"
+[[ -f "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
 
 # add ~/.local/bin to PATH if not in it
-[[ ":${PATH}:" != *:"$HOME/.local/bin":* ]] \
-    && export PATH="$HOME/.local/bin:$PATH"
+[[ ":${PATH}:" != *:"${HOME}/.local/bin":* ]] \
+    && export PATH="${HOME}/.local/bin:${PATH}"
 
 # Set LS_COLORS
-if ! [[ -f "$HOME/.dir_colors" ]]; then
-    dircolors --print-database > "$HOME/.dir_colors"
+if ! [[ -f "${HOME}/.dir_colors" ]]; then
+    dircolors --print-database > "${HOME}/.dir_colors"
 fi
-eval "$(dircolors "$HOME/.dir_colors")"
+eval "$(dircolors "${HOME}/.dir_colors")"
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
     export BAT_STYLE='changes,header'
     if command -v batman >/dev/null 2>&1; then
-        alias man='BAT_STYLE=plain batman'
         export BATPIPE=color
-        eval "$(batpipe)"
-        eval "$(batman --export-env)"
+        eval   "$(batpipe)"
+        eval   "$(batman --export-env)"
+        alias  man='BAT_STYLE=plain batman'
     fi
-    if [[ -f "$HOME/.config/bat/themes/Spx.tmTheme" ]]; then
+    if  [[  -f "${HOME}/.config/bat/themes/Spx.tmTheme" ]]; then
         export BAT_THEME='Spx'
     else
         export BAT_THEME='base16'
@@ -59,19 +59,19 @@ if command -v bat >/dev/null 2>&1; then
 fi
 
 if [[ -v WAYLAND_DISPLAY ]]; then
-    alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
+    alias  virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 else
     # X11 cursor theme
     export XCURSOR_THEME=Adwaita
-    alias virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
+    alias  virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 fi
 
 # rustup shell setup
-[[ -x /usr/bin/cargo && ":${PATH}:" != *:"$HOME/.cargo/bin":* ]] \
-    && export PATH="$HOME/.cargo/bin:$PATH"
+[[ -x /usr/bin/cargo && ":${PATH}:" != *:"${HOME}/.cargo/bin":* ]] \
+    && export PATH="${HOME}/.cargo/bin:${PATH}"
 # Mocword - Predict next words
 command -v mocword >/dev/null 2>&1 \
-    && export MOCWORD_DATA="$HOME/.local/share/mocword/mocword.sqlite"
+    && export MOCWORD_DATA="${HOME}/.local/share/mocword/mocword.sqlite"
 
 # Enable shell autocompletion for uv commands
 command -v uv >/dev/null 2>&1 \
@@ -89,10 +89,10 @@ prompt_command() {
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
             local sig
-            sig="$(kill -l $exit_code 2>/dev/null)"
-            [[ -n "$sig" ]] && exit_code="SIG$sig"
+            sig="$(kill -l ${exit_code} 2>/dev/null)"
+            [[ -n "${sig}" ]] && exit_code="SIG${sig}"
         fi
-        exit_code="\[\e[1;31m\]$exit_code\[\e[0m\] "
+        exit_code="\[\e[1;31m\]${exit_code}\[\e[0m\] "
     else
         exit_code=" "
     fi
@@ -105,7 +105,7 @@ prompt_command() {
         venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
     fi
     local cwd="\W"
-    cwd="\[\e[38;5;248m\]$cwd\[\e[1;38;5;66m\]/"
+    cwd="\[\e[38;5;248m\]${cwd}\[\e[1;38;5;66m\]/"
     if [[ -v SSH_CONNECTION ]]; then
         local is_ssh=
         is_ssh+="\[\e[38;5;8m\]"
@@ -114,11 +114,11 @@ prompt_command() {
     fi
     PS1=
     PS1+="\[\e[0m\]"
-    PS1+="$exit_code"
-    PS1+="$venv"
-    PS1+="$cwd"
-    PS1+="$is_ssh"
-    PS1+="$jobs_str"
+    PS1+="${exit_code}"
+    PS1+="${venv}"
+    PS1+="${cwd}"
+    PS1+="${is_ssh}"
+    PS1+="${jobs_str}"
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
 }
