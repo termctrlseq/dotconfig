@@ -22,6 +22,7 @@ export EDITOR='vim'
 export  PAGER='bat -p'
 export   LESS='--RAW-CONTROL-CHARS --mouse'
 export CDPATH="${HOME}:${HOME}/Code:${HOME}/.config"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Ignore ${HOME}/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="${HOME}"
