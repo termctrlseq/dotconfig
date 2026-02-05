@@ -43,8 +43,16 @@ bind -m emacs      -x '"\eh": run-help'
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\]=> \[\e[0m\]"
     local pt_tmp="/tmp/pt.tmp"
+    local keycode
+    keycode="$(xmodmap -pke | grep 'keycode\s\+36')"
+    xmodmap -e 'keycode  36 = Escape'
     pt_live.py "${pt_tmp}" "${pt_prompt@P}"
-    [[ -f "$pt_tmp" ]] && read -r READLINE_LINE < "$pt_tmp" && ydotool key 28:1 28:0
+    xmodmap -e "${keycode}"
+    if [[ -f "$pt_tmp" ]]; then
+        read -r READLINE_LINE < "$pt_tmp"
+        rm -f "$pt_tmp"
+        ydotool key 28:1 28:0 28:1 28:0
+    fi
 }
 bind -m vi-command -x '"\ep": start-ptpython'
 bind -m vi-insert  -x '"\ep": start-ptpython'
