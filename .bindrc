@@ -28,10 +28,22 @@ bind  -m  vi-command  '"\C-\M-l": clear-screen'
 bind  -m  vi-command  '"\ee":  execute-named-command'
 
 # Uppercase previous (or current) word
-bind  -m  vi-command \
-    '"\C-b": "mab\eeupcase-word\C-me\eebackward-word\C-m\eeupcase-word\C-m`a"'
-bind  -m  vi-insert  \
-    '"\C-b": "\emab\eeupcase-word\C-me\eebackward-word\C-m\eeupcase-word\C-m`aa"'
+upcase_word() {
+    local line new_word i j
+    line="$READLINE_LINE" # typed line
+    i="$READLINE_POINT"   # cursor position
+    j="$READLINE_POINT"
+    # find index of the beginning of the word under cursor
+    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ [a-zA-Z_] ]]; do ((i--)); done
+    # find index of the end of the word under cursor
+    while [[ "${line:${j}:1}" =~ [a-zA-Z_] ]]; do ((j++)); done
+    # word under cursor (start=i; length=j-i)
+    new_word="${line:${i}:$((j - i))}"
+    # combine: line before word, upper-cased word, line after word
+    READLINE_LINE="${line:0:${i}}${new_word@U}${line: ${j}}"
+}
+bind -m vi-command -x '"\C-b": upcase_word'
+bind -m vi-insert  -x '"\C-b": upcase_word'
 
 # invoke the manual for the command preceding the cursor by pressing Alt+h.
 run-help() { h $READLINE_LINE; }
