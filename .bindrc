@@ -42,7 +42,8 @@ bind -m emacs      -x '"\eh": run-help'
 # start ptpython with Alt-p
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\]=> \[\e[0m\]"
-    local pt_tmp="/tmp/pt.tmp"
+    local pt_tmp
+    pt_tmp="$(mktemp)"
     local keycode
     keycode="$(xmodmap -pke | grep 'keycode\s\+36')"
     xmodmap -e 'keycode  36 = Escape'
