@@ -1,31 +1,31 @@
 # vim: ft=sh
-# shellcheck disable=SC2016,SC2086
 #
 # ~/.bindrc
 #
+# shellcheck disable=SC2016,SC2086
 
 # Attempt to perform completion on the text before point
-bind  -m  vi-command  '"\t":   complete'
-bind  -m  vi-insert   '"\t":   complete'
+bind -m vi-command  '"\t":   complete'
+bind -m vi-insert   '"\t":   complete'
 # Attempt menu completion from the history list
-bind  -m  vi-command  '"\ed":  dabbrev-expand'
-bind  -m  vi-insert   '"\ed":  dabbrev-expand'
+bind -m vi-command  '"\ed":  dabbrev-expand'
+bind -m vi-insert   '"\ed":  dabbrev-expand'
 
 # Perform history expansion on the current line
-bind  -m  vi-command  '"\ef":  history-expand-line'
-bind  -m  vi-insert   '"\ef":  history-expand-line'
+bind -m vi-command  '"\ef":  history-expand-line'
+bind -m vi-insert   '"\ef":  history-expand-line'
 # Perform glob expansions
-bind  -m  vi-command  '"\eg":  glob-expand-word'
-bind  -m  vi-insert   '"\eg":  glob-expand-word'
+bind -m vi-command  '"\eg":  glob-expand-word'
+bind -m vi-insert   '"\eg":  glob-expand-word'
 
 # Drag the word before point past the word after point
-bind  -m  vi-command  '"\C-t": transpose-words'
-bind  -m  vi-insert   '"\C-t": transpose-words'
+bind -m vi-command  '"\C-t": transpose-words'
+bind -m vi-insert   '"\C-t": transpose-words'
 
 # Clear screen
-bind  -m  vi-command  '"\C-\M-l": clear-screen'
+bind -m vi-command  '"\C-\M-l": clear-screen'
 # Execute readline command
-bind  -m  vi-command  '"\ee":  execute-named-command'
+bind -m vi-command  '"\ee":  execute-named-command'
 
 # Uppercase previous (or current) word
 upcase_word() {
