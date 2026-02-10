@@ -65,7 +65,6 @@ start-ptpython() {
         read -r READLINE_LINE < "$pt_tmp"
         READLINE_POINT="${#READLINE_LINE}"
         rm -f "$pt_tmp"
-        ydotool key 28:1 28:0 28:1 28:0
     fi
 }
 bind -m vi-command -x '"\ep": start-ptpython'
