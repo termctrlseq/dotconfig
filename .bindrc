@@ -34,9 +34,9 @@ upcase_word() {
     i="$READLINE_POINT"   # cursor position
     j="$READLINE_POINT"
     # find index of the beginning of the word under cursor
-    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ [a-zA-Z_] ]]; do ((i--)); done
+    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ [a-zA-Z0-9_] ]]; do ((i--)); done
     # find index of the end of the word under cursor
-    while [[ "${line:${j}:1}" =~ [a-zA-Z_] ]]; do ((j++)); done
+    while [[ "${line:${j}:1}" =~ [a-zA-Z0-9_] ]]; do ((j++)); done
     # word under cursor (start=i; length=j-i)
     new_word="${line:${i}:$((j - i))}"
     # combine: line before word, upper-cased word, line after word
