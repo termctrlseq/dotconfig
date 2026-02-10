@@ -29,7 +29,7 @@ bind -m vi-command  '"\ee":  execute-named-command'
 
 # Uppercase previous (or current) word
 upcase_word() {
-    local line new_word i j
+    local line word i j
     line="$READLINE_LINE" # typed line
     i="$READLINE_POINT"   # cursor position
     j="$READLINE_POINT"
@@ -38,9 +38,9 @@ upcase_word() {
     # find index of the end of the word under cursor
     while [[ "${line:${j}:1}" =~ [a-zA-Z0-9_] ]]; do ((j++)); done
     # word under cursor (start=i; length=j-i)
-    new_word="${line:${i}:$((j - i))}"
+    word="${line:${i}:$((j - i))}"
     # combine: line before word, upper-cased word, line after word
-    READLINE_LINE="${line:0:${i}}${new_word@U}${line: ${j}}"
+    READLINE_LINE="${line:0:${i}}${word@U}${line: ${j}}"
 }
 bind -m vi-command -x '"\C-b": upcase_word'
 bind -m vi-insert  -x '"\C-b": upcase_word'
