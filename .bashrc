@@ -8,8 +8,7 @@
 alias    ls='ls --color=auto'
 alias  grep='grep --color=auto'
 alias pydoc='MANPAGER="vim +MANPAGER --not-a-term -" pydoc'
-command -v xdg-open >/dev/null 2>&1 && alias     o='xdg-open'
-command -v virsh    >/dev/null 2>&1 && alias virsh='virsh -c qemu:///system'
+alias virsh='virsh -c qemu:///system'
 
 # see bash(1)
 export       HISTSIZE=9999
@@ -22,7 +21,7 @@ export EDITOR='vim'
 export  PAGER='bat -p'
 export   LESS='--RAW-CONTROL-CHARS --mouse'
 export CDPATH="${HOME}:${HOME}/Code:${HOME}/.config"
-export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Ignore ${HOME}/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="${HOME}"
@@ -81,7 +80,7 @@ command -v uv >/dev/null 2>&1 \
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
 PS0="\e[2 q\e]112\a" # block cursor, reset color
-# Primary prompt
+# Primary prompt is set with prompt_command
 PS1="\W \$ "
 # Continuation prompt
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
@@ -107,8 +106,8 @@ prompt_command() {
     fi
     local cwd="\W"
     cwd="\[\e[38;5;248m\]${cwd}\[\e[1;38;5;66m\]/"
+    local is_ssh=
     if [[ -v SSH_CONNECTION ]]; then
-        local is_ssh=
         is_ssh+="\[\e[38;5;8m\]"
         is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
         is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
