@@ -66,6 +66,10 @@ else
     alias  virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 fi
 
+if pgrep -xu "${USER}" qtile >/dev/null 2>&1; then
+    alias reboot='qtile cmd-obj -o root -f shutdown; sleep 1; reboot'
+fi
+
 # rustup shell setup
 [[ -x /usr/bin/cargo && ":${PATH}:" != *:"${HOME}/.cargo/bin":* ]] \
     && export PATH="${HOME}/.cargo/bin:${PATH}"
