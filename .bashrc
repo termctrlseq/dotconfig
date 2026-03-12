@@ -9,6 +9,7 @@ alias    ls='ls --color=auto'
 alias  grep='grep --color=auto'
 alias pydoc='MANPAGER="vim +MANPAGER --not-a-term -" pydoc'
 alias virsh='virsh -c qemu:///system'
+alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 
 # see bash(1)
 export       HISTSIZE=9999
@@ -56,14 +57,6 @@ if command -v bat >/dev/null 2>&1; then
     else
         export BAT_THEME='base16'
     fi
-fi
-
-if [[ -v WAYLAND_DISPLAY ]]; then
-    alias  virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
-else
-    # X11 cursor theme
-    export XCURSOR_THEME=Adwaita
-    alias  virt-viewer='virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 fi
 
 if pgrep -xu "${USER}" qtile >/dev/null 2>&1; then
