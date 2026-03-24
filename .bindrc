@@ -23,7 +23,8 @@ bind -m vi-command  '"\C-t": transpose-words'
 bind -m vi-insert   '"\C-t": transpose-words'
 
 # Clear screen
-bind -m vi-command  '"\C-\M-l": clear-screen'
+bind -m vi-command  '"\C-l": clear-screen'
+bind -m vi-insert   '"\C-l": clear-screen'
 # Execute readline command
 bind -m vi-command  '"\ee":  execute-named-command'
 
