@@ -30,7 +30,7 @@ stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set  -o vi # Bash vi mode
 
 # Readline bindings
-[[ -f "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
+[[ -r "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
 
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"${HOME}/.local/bin":* ]] \
