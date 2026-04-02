@@ -1,0 +1,1 @@
+# bash and tmux config
