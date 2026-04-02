@@ -46,8 +46,37 @@ upcase_word() {
 bind -m vi-command -x '"\C-b": upcase_word'
 bind -m vi-insert  -x '"\C-b": upcase_word'
 
-# invoke the manual for the command preceding the cursor by pressing Alt+h.
-run-help() { h $READLINE_LINE; }
+# invoke the manual for the command preceding the cursor by pressing Alt-h.
+run-help() {
+    local line
+    read -ra line <<< $READLINE_LINE
+    if command -v bat >/dev/null 2>&1; then
+        pager_cmd=(bat -plhelp)
+    else
+        pager_cmd=(less)
+    fi
+    # Number of arguments is one
+    if (( ${#line[@]} == 1 )); then
+        if help "${line[0]}" >/dev/null 2>&1; then
+            help "${line[0]}" | "${pager_cmd[@]}"
+        elif "${line[0]}" --help >/dev/null 2>&1; then
+            "${line[0]}" --help | "${pager_cmd[@]}"
+        elif "${line[0]}" -h >/dev/null 2>&1; then
+            "${line[0]}" -h | "${pager_cmd[@]}"
+        else
+            exit 1
+        fi
+    # Number of arguments is greater than one
+    elif (( ${#line[@]} > 1 )); then
+        if "${line[0]}" "help" "${line[@]:1}" >/dev/null 2>&1; then
+            "${line[0]}" "help" "${line[@]:1}" | "${pager_cmd[@]}"
+        elif "${line[@]}" --help >/dev/null 2>&1; then
+            "${line[@]}" --help | "${pager_cmd[@]}"
+        else
+            exit 1
+        fi
+    fi
+}
 bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
