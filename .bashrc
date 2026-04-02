@@ -37,10 +37,11 @@ set  -o vi # Bash vi mode
     && export PATH="${HOME}/.local/bin:${PATH}"
 
 # Set LS_COLORS
-if ! [[ -f "${HOME}/.dir_colors" ]]; then
-    dircolors --print-database > "${HOME}/.dir_colors"
+dir_colors="${HOME}/.dir_colors"
+if ! [[ -f "$dir_colors" ]]; then
+    dircolors --print-database > "$dir_colors"
 fi
-eval "$(dircolors "${HOME}/.dir_colors")"
+[[ -r "$dir_colors" ]] && eval "$(dircolors "$dir_colors")"
 
 # bat setup
 if command -v bat >/dev/null 2>&1; then
