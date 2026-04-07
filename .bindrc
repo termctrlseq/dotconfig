@@ -57,12 +57,12 @@ run-help() {
     fi
     # Number of arguments is one
     if (( ${#line[@]} == 1 )); then
-        if help "${line[0]}" >/dev/null 2>&1; then
-            help "${line[0]}" | "${pager_cmd[@]}"
-        elif "${line[0]}" --help >/dev/null 2>&1; then
-            "${line[0]}" --help | "${pager_cmd[@]}"
-        elif "${line[0]}" -h >/dev/null 2>&1; then
-            "${line[0]}" -h | "${pager_cmd[@]}"
+        if help "${line[@]}" >/dev/null 2>&1; then
+            help "${line[@]}" | "${pager_cmd[@]}"
+        elif "${line[@]}" --help >/dev/null 2>&1; then
+            "${line[@]}" --help | "${pager_cmd[@]}"
+        elif "${line[@]}" -h >/dev/null 2>&1; then
+            "${line[@]}" -h | "${pager_cmd[@]}"
         else
             exit 1
         fi
