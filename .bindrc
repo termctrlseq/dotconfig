@@ -90,7 +90,7 @@ start-ptpython() {
     xmodmap -e 'keycode  36 = Escape'
     pt_live.py "${pt_tmp}" "${pt_prompt@P}"
     xmodmap -e "${keycode}"
-    if [[ -f "$pt_tmp" ]]; then
+    if [[ -r "$pt_tmp" ]]; then
         read -r READLINE_LINE < "$pt_tmp"
         READLINE_POINT="${#READLINE_LINE}"
         rm -f "$pt_tmp"
