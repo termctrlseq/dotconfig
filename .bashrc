@@ -80,8 +80,11 @@ PS0="\e[2 q\e]112\a" # block cursor, reset color
 # Primary prompt is set with prompt_command
 PS1="\W \$ "
 # Continuation prompt
+# see console_codes(4): 'ECMA-48 Select Graphic Rendition'
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
+
 prompt_command() {
+
     local exit_code="$?"
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
@@ -93,24 +96,28 @@ prompt_command() {
     else
         exit_code=" "
     fi
+
     local jobs_count
     jobs_count="$(jobs -p | wc -l)"
     local jobs_str=
     (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]"
+
     local venv=
     if [[ -v VIRTUAL_ENV_PROMPT ]]; then
         venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
     fi
+
     local cwd="\W"
     cwd="\[\e[38;5;248m\]${cwd}\[\e[1;38;5;66m\]/"
+
     local is_ssh=
     if [[ -v SSH_CONNECTION ]]; then
         is_ssh+="\[\e[38;5;8m\]"
         is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
         is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
     fi
-    PS1=
-    PS1+="\[\e[0m\]"
+
+    PS1="\[\e[0m\]"
     PS1+="${exit_code}"
     PS1+="${venv}"
     PS1+="${cwd}"
