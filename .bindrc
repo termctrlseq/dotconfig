@@ -7,9 +7,6 @@
 # Attempt to perform completion on the text before point
 bind -m vi-command  '"\t":   complete'
 bind -m vi-insert   '"\t":   complete'
-# Attempt menu completion from the history list
-bind -m vi-command  '"\ed":  dabbrev-expand'
-bind -m vi-insert   '"\ed":  dabbrev-expand'
 
 # Perform history expansion on the current line
 bind -m vi-command  '"\ef":  history-expand-line'
