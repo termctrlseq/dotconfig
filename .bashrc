@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+[[ -r "${HOME}/.secrets" ]] && source "${HOME}/.secrets"
+
 alias    ls='ls --color=auto'
 alias    ai='tgpt --key $POLLINATIONS_API_KEY'
 alias  grep='grep --color=auto'
