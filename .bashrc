@@ -6,7 +6,9 @@
 [[ $- != *i* ]] && return
 
 alias    ls='ls --color=auto'
+alias    ai='tgpt --key $POLLINATIONS_API_KEY'
 alias  grep='grep --color=auto'
+alias  clip='xclip -in -selection clipboard -rmlastnl'
 alias pydoc='MANPAGER="vim +MANPAGER --not-a-term -" pydoc'
 alias virsh='virsh -c qemu:///system'
 alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
