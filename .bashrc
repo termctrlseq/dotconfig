@@ -93,7 +93,7 @@ prompt_command() {
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
             local sig
-            sig="$(kill -l ${exit_code} 2>/dev/null)"
+            sig="$(kill -l $((exit_code - 128)) 2>/dev/null)"
             [[ -n "${sig}" ]] && exit_code="SIG${sig}"
         fi
         exit_code="\[\e[1;31m\]${exit_code}\[\e[0m\] "
