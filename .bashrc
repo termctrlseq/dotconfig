@@ -106,7 +106,7 @@ prompt_command() {
     local jobs_str=
     (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]"
 
-    local venv=
+    local venv
     if [[ -v VIRTUAL_ENV_PROMPT ]]; then
         venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
     fi
@@ -114,7 +114,7 @@ prompt_command() {
     local cwd="\W"
     cwd="\[\e[38;5;248m\]${cwd}\[\e[1;38;5;66m\]/"
 
-    local is_ssh=
+    local is_ssh
     if [[ -v SSH_CONNECTION ]]; then
         is_ssh+="\[\e[38;5;8m\]"
         is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
@@ -127,6 +127,16 @@ prompt_command() {
     PS1+="${cwd}"
     PS1+="${is_ssh}"
     PS1+="${jobs_str}"
+
+    # start new line when prompt is longer than a third of the terminal width
+    if command -v perl >/dev/null 2>&1; then
+        local ps_one plen tw
+        ps_one="$(perl -pe 's/\\\[.*?\\\]//g' <<<"${PS1}")"
+        plen="$(wc -m <<<"${ps_one@P}")"
+        tw="$(tput cols)"
+        (( plen > tw / 3 )) && PS1+="\n\[\e[1;38;5;66m\]_"
+    fi
+
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
 }
