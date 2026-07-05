@@ -59,7 +59,7 @@ run-help() {
         elif "${line[@]}" -h >/dev/null 2>&1; then
             "${line[@]}" -h | "${pager_cmd[@]}"
         else
-            exit 1
+            return 1
         fi
     # Number of arguments is greater than one
     elif (( ${#line[@]} > 1 )); then
@@ -68,7 +68,7 @@ run-help() {
         elif "${line[@]}" --help >/dev/null 2>&1; then
             "${line[@]}" --help | "${pager_cmd[@]}"
         else
-            exit 1
+            return 1
         fi
     fi
 }
