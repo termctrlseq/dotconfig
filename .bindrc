@@ -96,11 +96,9 @@ bind -m vi-insert  -x '"\ep": start-ptpython'
 
 # start auto completion menu with Alt-m
 bash_auto_comp() {
-    local mode=""
-    # Optional: prepend a vi-mode indicator (for show-mode-in-prompt users).
-    # Uncomment and customize.
+    local mode prompt
     mode="\[\e[1;38;5;8m\][i]\[\e[0m\]"
-    local prompt="${mode}${PS1}"
+    prompt="${mode}$(perl -pe 's/\\\[\\e\].*?\\\]//g' <<<"${PS1}")"
     local cmd_file
     local -a result
     cmd_file="$(mktemp)"
