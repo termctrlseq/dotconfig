@@ -89,36 +89,40 @@ PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
 
 prompt_command() {
 
-    local exit_code="$?"
+    local exit_code="$?" ps_one=""
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
             local sig
-            sig="$(kill -l $((exit_code - 128)) 2>/dev/null)"
+            sig="$(kill -l "$((exit_code - 128))" 2>/dev/null)"
             [[ -n "${sig}" ]] && exit_code="SIG${sig}"
         fi
+        ps_one+="${exit_code} "
         exit_code="\[\e[1;31m\]${exit_code}\[\e[0m\] "
     else
         exit_code=" "
+        ps_one+=" "
     fi
 
     local jobs_count
     jobs_count="$(jobs -p | wc -l)"
     local jobs_str=
-    (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]"
+    (( jobs_count > 0 )) && jobs_str="\[\e[1;38;5;172m\]\j\[\e[0m\]" && ps_one+="\j"
 
     local venv
     if [[ -v VIRTUAL_ENV_PROMPT ]]; then
         venv="\[\e[38;5;12m\]󰌠\[\e[4m\] ${VIRTUAL_ENV_PROMPT}\[\e[0m\] "
+        ps_one+="󰌠 ${VIRTUAL_ENV_PROMPT} "
     fi
 
-    local cwd="\W"
-    cwd="\[\e[38;5;248m\]${cwd}\[\e[1;38;5;66m\]/"
+    local cwd="\[\e[38;5;248m\]\W\[\e[1;38;5;66m\]/"
+    ps_one+="\W"
 
     local is_ssh
     if [[ -v SSH_CONNECTION ]]; then
         is_ssh+="\[\e[38;5;8m\]"
         is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
         is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
+        ps_one+="\u@\h"
     fi
 
     PS1="\[\e[0m\]"
@@ -129,13 +133,10 @@ prompt_command() {
     PS1+="${jobs_str}"
 
     # start new line when prompt is longer than a third of the terminal width
-    if command -v perl >/dev/null 2>&1; then
-        local ps_one plen tw
-        ps_one="$(perl -pe 's/\\\[.*?\\\]//g' <<<"${PS1}")"
-        plen="$(wc -m <<<"${ps_one@P}")"
-        tw="$(tput cols)"
-        (( plen > tw / 3 )) && PS1+="\n\[\e[1;38;5;66m\]_"
-    fi
+    local ps_one_exp="${ps_one@P}" plen tw
+    plen=${#ps_one_exp}
+    tw="$COLUMNS"
+    (( plen > tw / 3 )) && PS1+="\n\[\e[1;38;5;66m\]_"
 
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
