@@ -95,6 +95,7 @@ bind -m vi-command -x '"\ep": start-ptpython'
 bind -m vi-insert  -x '"\ep": start-ptpython'
 
 # start auto completion menu with Alt-m
+# https://github.com/termctrlseq/bash_auto_comp
 bash_auto_comp() {
     local mode prompt
     mode="\[\e[1;38;5;8m\][i]\[\e[0m\]"
