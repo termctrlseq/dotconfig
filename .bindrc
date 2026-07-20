@@ -2,7 +2,7 @@
 #
 # ~/.bindrc
 #
-# shellcheck disable=SC2016,SC2086
+# shellcheck disable=SC2016,SC2064,SC2086
 
 # Attempt to perform completion on the text before point
 bind -m vi-command  '"\t":   complete'
@@ -81,10 +81,15 @@ start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
     local pt_tmp keycode
     pt_tmp="$(mktemp)"
-    keycode="$(xmodmap -pke | grep 'keycode\s\+36')"
-    xmodmap -e 'keycode  36 = Escape'
+    set -o pipefail
+    if keycode="$(
+        xmodmap -pke 2>/dev/null \
+        | awk '$1 == "keycode" && $2 == "36"'
+    )"; then
+        xmodmap -e 'keycode  36 = Escape'
+        trap "xmodmap -e '${keycode}'" RETURN
+    fi
     pt_live.py "${pt_tmp}" "${pt_prompt@P}"
-    trap 'xmodmap -e "${keycode}"' RETURN
     if [[ -r "$pt_tmp" ]]; then
         read -r READLINE_LINE < "$pt_tmp"
         READLINE_POINT="${#READLINE_LINE}"
