@@ -76,7 +76,7 @@ bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
 
-# start ptpython with Alt-p
+# start ptpython with Alt-p or Escape p
 # https://github.com/termctrlseq/pt-live
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
@@ -128,3 +128,12 @@ bash-auto-comp() {
 bind -m vi-command -x '"\em": bash-auto-comp'
 bind -m vi-insert  -x '"\em": bash-auto-comp'
 
+# add identity and start tmux if not running
+tmx() {
+    ssh-add -l >/dev/null 2>&1 || ssh-add ~/.ssh/id_ed25519
+    if [[ -v TMUX ]]; then
+        printf "\e[33mtmux session running!\e[0m\n"
+    else
+        tmux new -As tmux
+    fi
+}
