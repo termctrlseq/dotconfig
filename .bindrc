@@ -24,7 +24,7 @@ bind -m vi-command  '"\C-l": clear-screen'
 bind -m vi-insert   '"\C-l": clear-screen'
 
 # Uppercase previous (or current) word
-upcase_word() {
+upcase-word() {
     local line word i j
     line="$READLINE_LINE" # typed line
     i="$READLINE_POINT"   # cursor position
@@ -38,8 +38,8 @@ upcase_word() {
     # combine: line before word, upper-cased word, line after word
     READLINE_LINE="${line:0:${i}}${word@U}${line: ${j}}"
 }
-bind -m vi-command -x '"\C-b": upcase_word'
-bind -m vi-insert  -x '"\C-b": upcase_word'
+bind -m vi-command -x '"\C-b": upcase-word'
+bind -m vi-insert  -x '"\C-b": upcase-word'
 
 # invoke the manual for the command preceding the cursor by pressing Alt-h.
 run-help() {
@@ -77,6 +77,7 @@ bind -m vi-insert  -x '"\eh": run-help'
 bind -m emacs      -x '"\eh": run-help'
 
 # start ptpython with Alt-p
+# https://github.com/termctrlseq/pt-live
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
     local pt_tmp keycode
@@ -100,8 +101,8 @@ bind -m vi-command -x '"\ep": start-ptpython'
 bind -m vi-insert  -x '"\ep": start-ptpython'
 
 # start auto completion menu with Alt-m
-# https://github.com/termctrlseq/bash_auto_comp
-bash_auto_comp() {
+# https://github.com/termctrlseq/bash-auto-comp
+bash-auto-comp() {
     local mode prompt
     mode="\[\e[1;38;5;8m\][i]\[\e[0m\]"
     prompt="${mode}$(perl -pe 's/\\\[\\e\].*?\\\]//g' <<<"${PS1}")"
@@ -124,6 +125,6 @@ bash_auto_comp() {
         fi
     fi
 }
-bind -m vi-command -x '"\em": bash_auto_comp'
-bind -m vi-insert  -x '"\em": bash_auto_comp'
+bind -m vi-command -x '"\em": bash-auto-comp'
+bind -m vi-insert  -x '"\em": bash-auto-comp'
 
