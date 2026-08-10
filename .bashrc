@@ -83,6 +83,7 @@ command -v uv >/dev/null 2>&1 \
 PS0="\e[2 q\e]112\a" # block cursor, reset color
 # Primary prompt is set with prompt_command
 PS1="\W \$ "
+PS1_LEN=
 # Continuation prompt
 # see console_codes(4): 'ECMA-48 Select Graphic Rendition'
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
@@ -133,13 +134,23 @@ prompt_command() {
     PS1+="${jobs_str}"
 
     # start new line when prompt is longer than a third of the terminal width
-    local ps_one_exp="${ps_one@P}" plen tw
-    plen=${#ps_one_exp}
+    local ps_one_exp="${ps_one@P}" tw
+    PS1_LEN=${#ps_one_exp}
     tw="$COLUMNS"
-    (( plen > tw / 3 )) && PS1+="\n\[\e[1;38;5;66m\]_"
+    if (( PS1_LEN > tw / 3 )); then
+        PS1+="\n\[\e[1;38;5;66m\]_"
+        PS1_LEN=0
+    fi
 
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
+
+    echo -ne '\033[2K' # clear entire line
+    update-cd-hist
 }
 # executed prior to issuing each primary prompt.
 PROMPT_COMMAND=prompt_command
+
+source "${HOME}/.cd_histrc"
+
+# vim: ft=sh sw=4 ts=4 sts=4

@@ -1,0 +1,125 @@
+#
+# ~/.cd_histrc
+#
+
+cd_hist=()
+cd_hist_current=0
+scroll_up=1
+# called from the PROMPT_COMMAND
+update-cd-hist() {
+    local cur_dir
+    scroll_up=1
+    cur_dir="$(pwd)" || return
+    if \
+        (( cd_hist_current > 0 )) \
+        && [[ "${cur_dir}" == "${cd_hist[cd_hist_current - 1]}" ]]
+    then
+        (( cd_hist_current -= 1 ))
+        return
+    fi
+    if [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]; then
+        (( cd_hist_current += 1 ))
+        return
+    fi
+    if [[ "${cur_dir}" != "${cd_hist[cd_hist_current]}" ]]; then
+        (( ++cd_hist_current ))
+        cd_hist=("${cd_hist[@]:0:cd_hist_current}" "$cur_dir")
+        return
+    fi
+}
+
+show-inline() {
+    printf '\033[s' # save current cursor position
+    printf '\033[%sC' "$(( PS1_LEN + 6 ))" # move the cursor forward n columns
+    printf '\033[2K' # clear entire line
+    printf '\033[30m' # foreground color black
+    printf '%s' "$*"
+    printf '\033[0m' # reset color
+    printf '\033[K' # clear from cursor to the end of the line
+    printf '\033[u' # restore saved cursor position
+}
+
+show-above() {
+    printf '\033[s' # save current cursor position
+    if (( "$scroll_up" )); then
+        printf '\033[S' # scroll up
+        scroll_up=0
+    fi
+    printf '\033[A' # move the cursor up one line
+    printf '\033[2K' # clear entire line
+    printf '\033[30m' # foreground color black
+    printf '%s' "$*"
+    printf '\033[0m' # reset color
+    printf '\033[K' # clear from cursor to the end of the line
+    printf '\033[u' # restore saved cursor position
+}
+
+show-current() {
+    (( ${#cd_hist[@]} )) || return
+    # PS1_LEN is set in the PROMPT_COMMAND
+    # PS1_LEN= # XXX DEBUG
+    if [[ -n "$PS1_LEN" ]]; then
+        show-inline "${cd_hist[cd_hist_current]}"
+    else
+        show-above "${cd_hist[cd_hist_current]}"
+    fi
+}
+
+cd-hist-prev() {
+    local target offset
+    offset=1
+    while (( cd_hist_current - offset >= 0 )); do
+        target="${cd_hist[cd_hist_current - offset]}"
+        if cd -- "$target" 2>/dev/null; then
+            (( cd_hist_current -= offset ))
+            show-current
+            break
+        else
+            (( ++offset ))
+            continue
+        fi
+    done
+}
+bind -m vi-command -x '"\e9": cd-hist-prev'
+bind -m vi-insert  -x '"\e9": cd-hist-prev'
+
+cd-hist-next() {
+    local target offset
+    offset=1
+    while (( cd_hist_current + offset < ${#cd_hist[@]} )); do
+        target="${cd_hist[cd_hist_current + offset]}"
+        if cd -- "$target" 2>/dev/null; then
+            (( cd_hist_current += offset ))
+            show-current
+            break
+        else
+            (( ++offset ))
+            continue
+        fi
+    done
+}
+bind -m vi-command -x '"\e0": cd-hist-next'
+bind -m vi-insert  -x '"\e0": cd-hist-next'
+
+show-cd-hist() {
+    (( ${#cd_hist[@]} )) || return
+    local start end idx
+    (( start = cd_hist_current - 10 ))
+    (( start < 0 )) && start=0
+    (( end = cd_hist_current + 10 ))
+    (( end > ${#cd_hist[@]} )) && (( end = ${#cd_hist[@]} ))
+    for (( idx = start; idx < end; ++idx )); do
+        printf '\033[30m' # foreground color black
+        printf '%s' "${cd_hist[idx]}"
+        printf '\033[0m' # reset color
+        if (( idx == cd_hist_current )); then
+            printf ' *'
+        fi
+        printf '\n'
+    done
+}
+bind -m vi-command -x '"\e8": show-cd-hist'
+bind -m vi-insert  -x '"\e8": show-cd-hist'
+
+
+# vim: ft=sh
