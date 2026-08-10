@@ -23,7 +23,7 @@ bind -m vi-insert   '"\C-t": transpose-words'
 bind -m vi-command  '"\C-l": clear-screen'
 bind -m vi-insert   '"\C-l": clear-screen'
 
-# Uppercase previous (or current) word
+# Uppercase previous (or current) word with Ctrl-b
 upcase-word() {
     local line word i j
     line="$READLINE_LINE" # typed line
@@ -80,16 +80,8 @@ bind -m emacs      -x '"\eh": run-help'
 # https://github.com/termctrlseq/pt-live
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
-    local pt_tmp keycode
+    local pt_tmp
     pt_tmp="$(mktemp)"
-    set -o pipefail
-    if keycode="$(
-        xmodmap -pke 2>/dev/null \
-        | awk '$1 == "keycode" && $2 == "36"'
-    )"; then
-        xmodmap -e 'keycode  36 = Escape'
-        trap "xmodmap -e '${keycode}'" RETURN
-    fi
     pt_live.py "${pt_tmp}" "${pt_prompt@P}"
     if [[ -r "$pt_tmp" ]]; then
         read -r READLINE_LINE < "$pt_tmp"
