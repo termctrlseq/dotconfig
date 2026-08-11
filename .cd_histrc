@@ -74,10 +74,8 @@ cd-hist-prev() {
             (( cd_hist_current -= offset ))
             show-current
             break
-        else
-            (( ++offset ))
-            continue
         fi
+        (( ++offset ))
     done
 }
 bind -m vi-command -x '"\e9": cd-hist-prev'
@@ -92,10 +90,8 @@ cd-hist-next() {
             (( cd_hist_current += offset ))
             show-current
             break
-        else
-            (( ++offset ))
-            continue
         fi
+        (( ++offset ))
     done
 }
 bind -m vi-command -x '"\e0": cd-hist-next'
