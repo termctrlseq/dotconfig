@@ -63,11 +63,11 @@ show-above() {
 show-current() {
     (( ${#cd_hist[@]} )) || return
     # PS1_LEN is set in the PROMPT_COMMAND
-    # PS1_LEN= # XXX DEBUG
+    local current="${cd_hist[cd_hist_current]/$HOME/\~}"
     if [[ -n "$PS1_LEN" ]]; then
-        show-inline "${cd_hist[cd_hist_current]}"
+        show-inline "$current"
     else
-        show-above "${cd_hist[cd_hist_current]}"
+        show-above "$current"
     fi
 }
 
@@ -112,7 +112,7 @@ show-cd-hist() {
     (( end > ${#cd_hist[@]} )) && (( end = ${#cd_hist[@]} ))
     for (( idx = start; idx < end; ++idx )); do
         printf '\033[38;5;%sm' "$CD_HIST_LIST_COLOR" # foreground color black
-        printf '%s' "${cd_hist[idx]}"
+        printf '%s' "${cd_hist[idx]/$HOME/\~}"
         printf '\033[0m' # reset color
         if (( idx == cd_hist_current )); then
             printf '\033[38;5;%sm %s\033[0m' "$CD_HIST_SYMBOL_COLOR" "$CD_HIST_SYMBOL"
