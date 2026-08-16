@@ -122,15 +122,15 @@ prompt_command() {
     if [[ -v SSH_CONNECTION ]]; then
         is_ssh+="\[\e[38;5;8m\]"
         is_ssh+="\[\e[1;48;5;8;38;5;233m\]\u@\h\[\e[0m\]"
-        is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\]"
-        ps_one+="\u@\h"
+        is_ssh+="\[\e[2;38;5;235;48;5;8m\]\[\e[0m\] "
+        ps_one+="\u@\h "
     fi
 
     PS1="\[\e[0m\]"
     PS1+="${exit_code}"
+    PS1+="${is_ssh}"
     PS1+="${venv}"
     PS1+="${cwd}"
-    PS1+="${is_ssh}"
     PS1+="${jobs_str}"
 
     # start new line when prompt is longer than a third of the terminal width
