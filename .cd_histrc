@@ -33,7 +33,10 @@ update-cd-hist() {
     fi
 
     # Switch to next history entry
-    if [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]; then
+    if \
+        (( cd_hist_current + 1 < ${#cd_hist[@]} )) \
+        && [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]
+    then
         (( cd_hist_current += 1 ))
         return
     fi
@@ -48,23 +51,25 @@ update-cd-hist() {
         cd_hist+=("$cur_dir")
 
         # Remove duplicates leaving the last entry
+        local tmp_dir
         local -a tmp
         declare -A seen
 
-        for (( i = "${#cd_hist[@]}" - 1; i >= 0; i-- )); do
-            if [[ ! -v 'seen[${cd_hist[i]}]' ]]; then
-                tmp+=("${cd_hist[i]}")
-                seen["${cd_hist[i]}"]=1
+        for (( i = ${#cd_hist[@]} - 1; i >= 0; i-- )); do
+            tmp_dir="${cd_hist[i]}"
+            if [[ ! -v 'seen[${tmp_dir}]' ]]; then
+                tmp+=("$tmp_dir")
+                seen["$tmp_dir"]=1
             fi
         done
 
         cd_hist=()
-        for (( i = "${#tmp[@]}" - 1; i >= 0; i-- )); do
+        for (( i = ${#tmp[@]} - 1; i >= 0; i-- )); do
             cd_hist+=("${tmp[i]}")
         done
 
         # Set current index to the last entry
-        (( cd_hist_current = "${#cd_hist[@]}" - 1 ))
+        (( cd_hist_current = ${#cd_hist[@]} - 1 ))
 
         return
     fi
@@ -83,7 +88,7 @@ show-inline() {
 
 show-above() {
     printf '\033[s' # save current cursor position
-    if (( "$scroll_up" )); then
+    if (( scroll_up )); then
         printf '\033[S' # scroll up
         scroll_up=0
     fi
@@ -100,7 +105,7 @@ show-current() {
     (( ${#cd_hist[@]} )) || return
     # PS1_LEN is set in the PROMPT_COMMAND
     local current="${cd_hist[cd_hist_current]/$HOME/\~}"
-    if [[ -n "$PS1_LEN" ]]; then
+    if [[ -n "${PS1_LEN:-}" ]]; then
         show-inline "$current"
     else
         show-above "$current"
@@ -108,6 +113,7 @@ show-current() {
 }
 
 cd-hist-prev() {
+    (( ${#cd_hist[@]} > 1 )) || return
     local target offset=1 wrap=0
     while true; do
         if (( cd_hist_current - offset < 0 )); then
@@ -127,6 +133,7 @@ bind -m vi-command -x '"\e9": cd-hist-prev'
 bind -m vi-insert  -x '"\e9": cd-hist-prev'
 
 cd-hist-next() {
+    (( ${#cd_hist[@]} > 1 )) || return
     local target offset=1 wrap=0
     while true; do
         if (( cd_hist_current + offset >= ${#cd_hist[@]} )); then
