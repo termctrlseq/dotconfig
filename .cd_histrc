@@ -108,9 +108,12 @@ show-current() {
 }
 
 cd-hist-prev() {
-    local target offset
-    offset=1
-    while (( cd_hist_current - offset >= 0 )); do
+    local target offset=1 wrap=0
+    while true; do
+        if (( cd_hist_current - offset < 0 )); then
+            (( ++wrap > 1 )) && return
+            (( offset -= ${#cd_hist[@]} ))
+        fi
         target="${cd_hist[cd_hist_current - offset]}"
         if cd -- "$target" 2>/dev/null; then
             (( cd_hist_current -= offset ))
@@ -124,9 +127,12 @@ bind -m vi-command -x '"\e9": cd-hist-prev'
 bind -m vi-insert  -x '"\e9": cd-hist-prev'
 
 cd-hist-next() {
-    local target offset
-    offset=1
-    while (( cd_hist_current + offset < ${#cd_hist[@]} )); do
+    local target offset=1 wrap=0
+    while true; do
+        if (( cd_hist_current + offset >= ${#cd_hist[@]} )); then
+            (( ++wrap > 1 )) && return
+            (( offset -= ${#cd_hist[@]} ))
+        fi
         target="${cd_hist[cd_hist_current + offset]}"
         if cd -- "$target" 2>/dev/null; then
             (( cd_hist_current += offset ))
