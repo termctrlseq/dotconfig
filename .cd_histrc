@@ -16,6 +16,14 @@ update-cd-hist() {
     local cur_dir
     scroll_up=1
     cur_dir="$(pwd)" || return
+
+    # History is empty
+    if (( ${#cd_hist[@]} == 0 )); then
+        cd_hist+=("$cur_dir")
+        return
+    fi
+
+    # Switch to previous history entry
     if \
         (( cd_hist_current > 0 )) \
         && [[ "${cur_dir}" == "${cd_hist[cd_hist_current - 1]}" ]]
@@ -23,13 +31,41 @@ update-cd-hist() {
         (( cd_hist_current -= 1 ))
         return
     fi
+
+    # Switch to next history entry
     if [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]; then
         (( cd_hist_current += 1 ))
         return
     fi
+
+    # New directory is neither adjacent nor current
     if [[ "${cur_dir}" != "${cd_hist[cd_hist_current]}" ]]; then
-        (( ++cd_hist_current ))
-        cd_hist=("${cd_hist[@]:0:cd_hist_current}" "$cur_dir")
+        # Copy last entry to the end if not the same
+        if [[ "${cd_hist[cd_hist_current]}" != "${cd_hist[-1]}" ]]; then
+            cd_hist+=("${cd_hist[cd_hist_current]}")
+        fi
+        # Add new history entry
+        cd_hist+=("$cur_dir")
+
+        # Remove duplicates leaving the last entry
+        local -a tmp
+        declare -A seen
+
+        for (( i = "${#cd_hist[@]}" - 1; i >= 0; i-- )); do
+            if [[ ! -v 'seen[${cd_hist[i]}]' ]]; then
+                tmp+=("${cd_hist[i]}")
+                seen["${cd_hist[i]}"]=1
+            fi
+        done
+
+        cd_hist=()
+        for (( i = "${#tmp[@]}" - 1; i >= 0; i-- )); do
+            cd_hist+=("${tmp[i]}")
+        done
+
+        # Set current index to the last entry
+        (( cd_hist_current = "${#cd_hist[@]}" - 1 ))
+
         return
     fi
 }
