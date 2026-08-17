@@ -88,6 +88,15 @@ PS1_LEN=
 # see console_codes(4): 'ECMA-48 Select Graphic Rendition'
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
 
+if [[ -r "${HOME}/.cd_histrc" ]] &&
+   source "${HOME}/.cd_histrc" &&
+   declare -F update-cd-hist >/dev/null
+then
+    alias update-cd-history="printf '\033[2K'; update-cd-hist"
+else
+    alias update-cd-history=''
+fi
+
 prompt_command() {
 
     local exit_code="$?" ps_one=""
@@ -145,12 +154,9 @@ prompt_command() {
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
 
-    echo -ne '\033[2K' # clear entire line
-    update-cd-hist
+    update-cd-history
 }
 # executed prior to issuing each primary prompt.
 PROMPT_COMMAND=prompt_command
-
-source "${HOME}/.cd_histrc"
 
 # vim: ft=sh sw=4 ts=4 sts=4
