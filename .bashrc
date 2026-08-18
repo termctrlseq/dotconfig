@@ -33,9 +33,6 @@ export GIT_CEILING_DIRECTORIES="${HOME}"
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set  -o vi # Bash vi mode
 
-# Readline bindings
-[[ -r "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
-
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"${HOME}/.local/bin":* ]] \
     && export PATH="${HOME}/.local/bin:${PATH}"
@@ -81,6 +78,9 @@ command -v uv >/dev/null 2>&1 \
 # Set up fzf key bindings and fuzzy completion
 command -v fzf >/dev/null 2>&1 \
     && eval "$(fzf --bash)"
+
+# Readline bindings
+[[ -r "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
