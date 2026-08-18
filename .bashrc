@@ -78,6 +78,10 @@ command -v mocword >/dev/null 2>&1 \
 command -v uv >/dev/null 2>&1 \
     && eval "$(uv generate-shell-completion bash)"
 
+# Set up fzf key bindings and fuzzy completion
+command -v fzf >/dev/null 2>&1 \
+    && eval "$(fzf --bash)"
+
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
 PS0="\e[2 q\e]112\a" # block cursor, reset color
