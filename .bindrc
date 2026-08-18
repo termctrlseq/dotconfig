@@ -26,13 +26,14 @@ bind -m vi-insert   '"\C-l": clear-screen'
 # Uppercase previous (or current) word with Ctrl-b
 upcase-word() {
     local line word i j
+    declare -r PATTERN='[a-zA-Z0-9_]'
     line="$READLINE_LINE" # typed line
     i="$READLINE_POINT"   # cursor position
     j="$READLINE_POINT"
     # find index of the beginning of the word under cursor
-    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ [a-zA-Z0-9_] ]]; do ((i--)); done
+    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ $PATTERN ]]; do ((i--)); done
     # find index of the end of the word under cursor
-    while [[ "${line:${j}:1}" =~ [a-zA-Z0-9_] ]]; do ((j++)); done
+    while [[ "${line:${j}:1}" =~ $PATTERN ]]; do ((j++)); done
     # word under cursor (start=i; length=j-i)
     word="${line:${i}:$((j - i))}"
     # combine: line before word, upper-cased word, line after word
