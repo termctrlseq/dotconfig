@@ -17,13 +17,13 @@ update-cd-hist() {
     scroll_up=1
     cur_dir="$(pwd)" || return
 
-    # History is empty
+    # History is empty, save current directory
     if (( ${#cd_hist[@]} == 0 )); then
         cd_hist+=("$cur_dir")
         return
     fi
 
-    # Switch to previous history entry
+    # Switch index to previous history entry
     if \
         (( cd_hist_current > 0 )) \
         && [[ "${cur_dir}" == "${cd_hist[cd_hist_current - 1]}" ]]
@@ -32,7 +32,7 @@ update-cd-hist() {
         return
     fi
 
-    # Switch to next history entry
+    # Switch index to next history entry
     if \
         (( cd_hist_current + 1 < ${#cd_hist[@]} )) \
         && [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]
@@ -55,6 +55,7 @@ update-cd-hist() {
         local -a tmp
         declare -A seen
 
+        # Find last duplicate by traversing in reverse
         for (( i = ${#cd_hist[@]} - 1; i >= 0; i-- )); do
             tmp_dir="${cd_hist[i]}"
             if [[ ! -v 'seen[${tmp_dir}]' ]]; then
@@ -63,6 +64,7 @@ update-cd-hist() {
             fi
         done
 
+        # Revert it back into cd_hist
         cd_hist=()
         for (( i = ${#tmp[@]} - 1; i >= 0; i-- )); do
             cd_hist+=("${tmp[i]}")
@@ -104,14 +106,15 @@ show-above() {
 show-current() {
     (( ${#cd_hist[@]} )) || return
     # PS1_LEN is set in the PROMPT_COMMAND
-    local current="${cd_hist[cd_hist_current]/$HOME/\~}"
+    local cur_dir="${cd_hist[cd_hist_current]/$HOME/\~}"
     if [[ -n "${PS1_LEN:-}" ]]; then
-        show-inline "$current"
+        show-inline "$cur_dir"
     else
-        show-above "$current"
+        show-above "$cur_dir"
     fi
 }
 
+# Change to previous directory in cd history with Alt-9 <(>
 cd-hist-prev() {
     (( ${#cd_hist[@]} > 1 )) || return
     local target offset=1 wrap=0
@@ -132,6 +135,7 @@ cd-hist-prev() {
 bind -m vi-command -x '"\e9": cd-hist-prev'
 bind -m vi-insert  -x '"\e9": cd-hist-prev'
 
+# Change to next directory in cd history with Alt-0 <)>
 cd-hist-next() {
     (( ${#cd_hist[@]} > 1 )) || return
     local target offset=1 wrap=0
@@ -152,6 +156,7 @@ cd-hist-next() {
 bind -m vi-command -x '"\e0": cd-hist-next'
 bind -m vi-insert  -x '"\e0": cd-hist-next'
 
+# Display history with Alt-8 <*>
 show-cd-hist() {
     (( ${#cd_hist[@]} )) || return
     local start end idx
