@@ -3,16 +3,17 @@
 #
 
 # Colors (0 - 255)
-CD_HIST_FILE="${HOME}/.cd_history"
 CD_HIST_LIST_COLOR=7
 CD_HIST_SYMBOL='*'
 CD_HIST_SYMBOL_COLOR=2
 
-if [[ -r $CD_HIST_FILE ]]; then
-    mapfile -t cd_hist < "$CD_HIST_FILE"
-else
-    cd_hist=()
-fi
+cd_hist=(
+    '/home/anton/.config/qtile'
+    '/home/anton/.config/vim'
+    '/home/anton/.local/bin'
+    '/home/anton/code'
+)
+
 cd_hist_current=$(( ${#cd_hist[@]} - 1 ))
 (( cd_hist_current < 0 )) && cd_hist_current=0
 
