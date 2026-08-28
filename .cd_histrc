@@ -4,7 +4,7 @@
 
 # Colors (0 - 255)
 CD_HIST_FILE="${HOME}/.cd_history"
-CD_HIST_LIST_COLOR=242
+CD_HIST_LIST_COLOR=7
 CD_HIST_NEW_COLOR=8
 CD_HIST_SYMBOL='*'
 CD_HIST_SYMBOL_COLOR=2
@@ -88,7 +88,7 @@ show-inline() {
     printf '\033[s' # save current cursor position
     printf '\033[%sC' "$(( PS1_LEN + 6 ))" # move the cursor forward n columns
     printf '\033[2K' # clear entire line
-    printf '\033[38;5;%sm' "$CD_HIST_NEW_COLOR" # foreground color black
+    printf '\033[2;38;5;%sm' "$CD_HIST_NEW_COLOR"
     printf '%s' "$*"
     printf '\033[0m' # reset color
     printf '\033[K' # clear from cursor to the end of the line
@@ -103,7 +103,7 @@ show-above() {
     fi
     printf '\033[A' # move the cursor up one line
     printf '\033[2K' # clear entire line
-    printf '\033[38;5;%sm' "$CD_HIST_NEW_COLOR" # foreground color black
+    printf '\033[2;38;5;%sm' "$CD_HIST_NEW_COLOR"
     printf '%s' "$*"
     printf '\033[0m' # reset color
     printf '\033[K' # clear from cursor to the end of the line
@@ -172,7 +172,7 @@ show-cd-hist() {
     (( end = cd_hist_current + 10 ))
     (( end > ${#cd_hist[@]} )) && (( end = ${#cd_hist[@]} ))
     for (( idx = start; idx < end; ++idx )); do
-        printf '\033[38;5;%sm' "$CD_HIST_LIST_COLOR" # foreground color black
+        printf '\033[2;38;5;%sm' "$CD_HIST_LIST_COLOR"
         printf '%s' "${cd_hist[idx]/$HOME/\~}"
         printf '\033[0m' # reset color
         if (( idx == cd_hist_current )); then
