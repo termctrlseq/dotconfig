@@ -10,7 +10,6 @@ CD_HIST_SYMBOL_COLOR=2
 cd_hist=(
     '/home/anton/.config/qtile'
     '/home/anton/.config/vim'
-    '/home/anton/.local/bin'
     '/home/anton/code'
 )
 
