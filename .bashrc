@@ -33,16 +33,6 @@ export GIT_CEILING_DIRECTORIES="${HOME}"
 stty -ixon # Disable Ctrl-s/Ctrl-q start/stop flow control
 set  -o vi # Bash vi mode
 
-terminal_type() {
-    if [[ -n $TMUX ]]; then
-        tmux display-message -p '#{client_termname}'
-    else
-        printf '%s\n' "$TERM"
-    fi
-}
-TERM_TYPE="$(terminal_type)"
-export TERM_TYPE
-
 # add ~/.local/bin to PATH if not in it
 [[ ":${PATH}:" != *:"${HOME}/.local/bin":* ]] \
     && export PATH="${HOME}/.local/bin:${PATH}"
