@@ -23,6 +23,9 @@ bind -m vi-insert   '"\C-t": transpose-words'
 bind -m vi-command  '"\C-l": clear-screen'
 bind -m vi-insert   '"\C-l": clear-screen'
 
+# Provide a negative numeric argument
+bind -m vi-command '"-": digit-argument'
+
 # Uppercase previous (or current) word with Ctrl-b
 upcase-word() {
     local line word i j
