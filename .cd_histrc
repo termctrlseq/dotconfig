@@ -85,8 +85,8 @@ update-cd-hist() {
     fi
 }
 
-bind -m vi-command '"\e1": accept-line'
-bind -m vi-insert  '"\e1": accept-line'
+bind -m vi-command '"\e:": accept-line'
+bind -m vi-insert  '"\e:": accept-line'
 renew-line() {
     printf '\033[2K' # clear entire line
     printf '\033[1A' # move the cursor up one line
@@ -98,8 +98,8 @@ renew-line() {
         SAVED_READLINE_POINT=''
     fi
 }
-bind -m vi-command -x '"\e2": renew-line'
-bind -m vi-insert  -x '"\e2": renew-line'
+bind -m vi-command -x '"\e\"": renew-line'
+bind -m vi-insert  -x '"\e\"": renew-line'
 
 # Change to previous directory in cd history with Alt-9 <(>
 # If command line contains a single number, use it as offset
@@ -132,10 +132,10 @@ cd-hist-prev() {
         (( ++offset ))
     done
 }
-bind -m vi-command -x '"\e3": cd-hist-prev'
-bind -m vi-insert  -x '"\e3": cd-hist-prev'
-bind -m vi-command    '"\e9": "\e3\e1\e\e2"'
-bind -m vi-insert     '"\e9": "\e3\e1\e2"'
+bind -m vi-command -x '"\e<": cd-hist-prev'
+bind -m vi-insert  -x '"\e<": cd-hist-prev'
+bind -m vi-command    '"\e,": "\e<\e:\e\e\""'
+bind -m vi-insert     '"\e,": "\e<\e:\e\""'
 
 # Change to next directory in cd history with Alt-0 <)>
 # If command line contains a single number, use it as offset
@@ -168,10 +168,10 @@ cd-hist-next() {
         (( ++offset ))
     done
 }
-bind -m vi-command -x '"\e4": cd-hist-next'
-bind -m vi-insert  -x '"\e4": cd-hist-next'
-bind -m vi-command    '"\e0": "\e4\e1\e\e2"'
-bind -m vi-insert     '"\e0": "\e4\e1\e2"'
+bind -m vi-command -x '"\e>": cd-hist-next'
+bind -m vi-insert  -x '"\e>": cd-hist-next'
+bind -m vi-command    '"\e.": "\e>\e:\e\e\""'
+bind -m vi-insert     '"\e.": "\e>\e:\e\""'
 
 # Display history with Alt-8 <*>
 show-cd-hist() {
@@ -196,8 +196,8 @@ show-cd-hist() {
         printf '\n'
     done
 }
-bind -m vi-command -x '"\e8": show-cd-hist'
-bind -m vi-insert  -x '"\e8": show-cd-hist'
+bind -m vi-command -x '"\e;": show-cd-hist'
+bind -m vi-insert  -x '"\e;": show-cd-hist'
 
 
 # vim: ft=sh
