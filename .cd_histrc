@@ -85,8 +85,6 @@ update-cd-hist() {
     fi
 }
 
-bind -m vi-command '"\e:": accept-line'
-bind -m vi-insert  '"\e:": accept-line'
 renew-line() {
     printf '\033[2K' # clear entire line
     printf '\033[1A' # move the cursor up one line
@@ -134,8 +132,8 @@ cd-hist-prev() {
 }
 bind -m vi-command -x '"\e<": cd-hist-prev'
 bind -m vi-insert  -x '"\e<": cd-hist-prev'
-bind -m vi-command    '"\e,": "\e<\e:\e\e\""'
-bind -m vi-insert     '"\e,": "\e<\e:\e\""'
+bind -m vi-command    '"\e,": "\e<\C-m\e\e\""'
+bind -m vi-insert     '"\e,": "\e<\C-m\e\""'
 
 # Change to next directory in cd history with Alt-0 <)>
 # If command line contains a single number, use it as offset
@@ -170,8 +168,8 @@ cd-hist-next() {
 }
 bind -m vi-command -x '"\e>": cd-hist-next'
 bind -m vi-insert  -x '"\e>": cd-hist-next'
-bind -m vi-command    '"\e.": "\e>\e:\e\e\""'
-bind -m vi-insert     '"\e.": "\e>\e:\e\""'
+bind -m vi-command    '"\e.": "\e>\C-m\e\e\""'
+bind -m vi-insert     '"\e.": "\e>\C-m\e\""'
 
 # Display history with Alt-8 <*>
 show-cd-hist() {
