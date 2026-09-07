@@ -24,7 +24,11 @@ bind -m vi-command  '"\C-l": clear-screen'
 bind -m vi-insert   '"\C-l": clear-screen'
 
 # Provide a negative numeric argument
-bind -m vi-command '"-": digit-argument'
+bind -m vi-command  '"-":    digit-argument'
+
+# Move cursor to the end of line
+bind -m vi-command  '"\C-e": end-of-line'
+bind -m vi-insert   '"\C-e": end-of-line'
 
 # Uppercase previous (or current) word with Ctrl-b
 upcase-word() {
