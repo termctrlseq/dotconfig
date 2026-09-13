@@ -17,6 +17,11 @@ cd_hist=(
     '/home/anton/code'
 )
 
+if [[ -r "$CD_HIST_TMP" ]]; then
+    printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
+    mapfile -t cd_hist < <(sort --unique "$CD_HIST_TMP")
+fi
+
 cd_hist_current=$(( ${#cd_hist[@]} - 1 ))
 (( cd_hist_current < 0 )) && cd_hist_current=0
 
@@ -80,6 +85,9 @@ update-cd-hist() {
 
         # Set current index to the last entry
         (( cd_hist_current = ${#cd_hist[@]} - 1 ))
+
+        # Add history entries to temporary history file
+        [[ -r "$CD_HIST_TMP" ]] && printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
 
         return
     fi
