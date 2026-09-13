@@ -24,7 +24,7 @@ shopt -s histappend globstar
 
 export EDITOR='vim'
 export  PAGER='bat -p'
-export   LESS='--RAW-CONTROL-CHARS --mouse'
+export   LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --mouse'
 export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Ignore ${HOME}/.git when in subdirectories
@@ -47,11 +47,13 @@ fi
 # bat setup
 if command -v bat >/dev/null 2>&1; then
     export BAT_STYLE='changes,header'
+    export MANPAGER="bat -plman --pager='less -RF --mouse'"
     if command -v batman >/dev/null 2>&1; then
-        export BATPIPE=color
-        eval   "$(batpipe)"
-        eval   "$(batman --export-env)"
-        alias  man='BAT_STYLE=plain batman'
+        LESSOPEN="|/usr/bin/batpipe %s"
+        export LESSOPEN
+        unset LESSCLOSE
+        BATPIPE="color"
+        export BATPIPE
     fi
     if  [[  -f "${HOME}/.config/bat/themes/Spx.tmTheme" ]]; then
         export BAT_THEME='Spx'
