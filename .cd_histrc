@@ -17,9 +17,12 @@ cd_hist=(
     '/home/anton/code'
 )
 
-if [[ -r "$CD_HIST_TMP" ]]; then
-    printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
-    mapfile -t cd_hist < <(sort --unique "$CD_HIST_TMP")
+if [[ -v TMUX ]]; then
+    CD_HIST_TMP="$(tmux display-message -p '/tmp/cd_hist.#{pid}.#{session_name}')"
+    if [[ -r "$CD_HIST_TMP" ]]; then
+        printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
+        mapfile -t cd_hist < <(sort --unique "$CD_HIST_TMP")
+    fi
 fi
 
 cd_hist_current=$(( ${#cd_hist[@]} - 1 ))
