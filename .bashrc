@@ -11,7 +11,6 @@ alias    ls='ls --color=auto'
 alias    ai='tgpt --key $POLLINATIONS_API_KEY'
 alias  grep='grep --color=auto'
 alias  clip='xclip -in -selection clipboard -rmlastnl'
-alias pydoc='MANPAGER="vim +MANPAGER --not-a-term -" pydoc'
 alias virsh='virsh -c qemu:///system'
 alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkeys=release-cursor=alt+enter'
 
@@ -25,6 +24,7 @@ shopt -s histappend globstar
 export EDITOR='vim'
 export  PAGER='bat -p'
 export   LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --mouse'
+export MANPAGER="bat -plman --pager='less -FR --mouse'"
 export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Ignore ${HOME}/.git when in subdirectories
@@ -47,7 +47,6 @@ fi
 # bat setup
 if command -v bat >/dev/null 2>&1; then
     export BAT_STYLE='changes,header'
-    export MANPAGER="bat -plman --pager='less -RF --mouse'"
     if command -v batman >/dev/null 2>&1; then
         LESSOPEN="|/usr/bin/batpipe %s"
         export LESSOPEN
