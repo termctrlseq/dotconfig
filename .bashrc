@@ -15,8 +15,9 @@ alias virt-viewer='GDK_BACKEND=x11 virt-viewer -c qemu:///system --wait --hotkey
 
 # see bash(1)
 export       HISTSIZE=9999
+export     HISTIGNORE='&:[ ]*'
 export    HISTCONTROL='erasedups'
-export HISTTIMEFORMAT="%F %T "
+export HISTTIMEFORMAT='%F %T '
 
 shopt -s histappend globstar
 
