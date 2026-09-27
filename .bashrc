@@ -39,7 +39,7 @@ set  -o vi # Bash vi mode
 
 # Set LS_COLORS
 dir_colors="${HOME}/.dir_colors"
-if ! [[ -f "$dir_colors" ]]; then
+if [[ ! -e "$dir_colors" ]]; then
     dircolors --print-database > "$dir_colors"
 fi
 [[ -r "$dir_colors" ]] && eval "$(dircolors "$dir_colors")"
