@@ -19,10 +19,6 @@ cd_hist=(
 
 if [[ -v TMUX ]]; then
     CD_HIST_TMP="$(tmux display-message -p '/tmp/cd_hist.#{pid}.#{session_name}')"
-    if [[ -r "$CD_HIST_TMP" ]]; then
-        printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
-        mapfile -t cd_hist < <(sort --unique "$CD_HIST_TMP")
-    fi
 fi
 
 cd_hist_current=$(( ${#cd_hist[@]} - 1 ))
@@ -30,35 +26,39 @@ cd_hist_current=$(( ${#cd_hist[@]} - 1 ))
 
 # called from the PROMPT_COMMAND
 update-cd-hist() {
-    local cur_dir
+    local cur_dir cd_hist_len=${#cd_hist[@]}
+    declare -a tmp
     cur_dir="$(pwd)" || return
+
+    # Prepend history file contents
+    if [[ -r "$CD_HIST_TMP" ]]; then
+        mapfile -t tmp < "$CD_HIST_TMP"
+        cd_hist=("${tmp[@]}" "${cd_hist[@]}")
+
+        dedup
+        ((cd_hist_current += ${#cd_hist[@]} - cd_hist_len))
+    fi
 
     # History is empty, save current directory
     if (( ${#cd_hist[@]} == 0 )); then
         cd_hist+=("$cur_dir")
-        return
-    fi
 
     # Switch index to previous history entry
-    if \
+    elif \
         (( cd_hist_current > 0 )) \
         && [[ "${cur_dir}" == "${cd_hist[cd_hist_current - 1]}" ]]
     then
         (( cd_hist_current -= 1 ))
-        return
-    fi
 
     # Switch index to next history entry
-    if \
+    elif \
         (( cd_hist_current + 1 < ${#cd_hist[@]} )) \
         && [[ "${cur_dir}" == "${cd_hist[cd_hist_current + 1]}" ]]
     then
         (( cd_hist_current += 1 ))
-        return
-    fi
 
     # New directory is neither adjacent nor current
-    if [[ "${cur_dir}" != "${cd_hist[cd_hist_current]}" ]]; then
+    elif [[ "${cur_dir}" != "${cd_hist[cd_hist_current]}" ]]; then
         # Copy last entry to the end if not the same
         if [[ "${cd_hist[cd_hist_current]}" != "${cd_hist[-1]}" ]]; then
             cd_hist+=("${cd_hist[cd_hist_current]}")
@@ -66,34 +66,38 @@ update-cd-hist() {
         # Add new history entry
         cd_hist+=("$cur_dir")
 
-        # Remove duplicates leaving the last entry
-        local tmp_dir
-        local -a tmp
-        declare -A seen
-
-        # Find last duplicate by traversing in reverse
-        for (( i = ${#cd_hist[@]} - 1; i >= 0; i-- )); do
-            tmp_dir="${cd_hist[i]}"
-            if [[ -n $tmp_dir && ! -v 'seen[${tmp_dir}]' ]]; then
-                tmp+=("$tmp_dir")
-                seen["$tmp_dir"]=1
-            fi
-        done
-
-        # Revert it back into cd_hist
-        cd_hist=()
-        for (( i = ${#tmp[@]} - 1; i >= 0; i-- )); do
-            cd_hist+=("${tmp[i]}")
-        done
-
         # Set current index to the last entry
         (( cd_hist_current = ${#cd_hist[@]} - 1 ))
 
-        # Add history entries to temporary history file
-        [[ -r "$CD_HIST_TMP" ]] && printf '%s\n' "${cd_hist[@]}" >> "$CD_HIST_TMP"
+        dedup
 
-        return
     fi
+
+    # Add history entries to temporary history file
+    [[ -r "$CD_HIST_TMP" ]] && printf '%s\n' "${cd_hist[@]}" > "$CD_HIST_TMP"
+}
+
+# de-duplicate
+dedup() {
+    local tmp_dir
+    local -a tmp
+    declare -A seen
+
+    # Find last duplicate by traversing in reverse
+    for (( i = ${#cd_hist[@]} - 1; i >= 0; i-- )); do
+        tmp_dir="${cd_hist[i]}"
+        if [[ -n $tmp_dir && ! -v 'seen[${tmp_dir}]' ]]; then
+            tmp+=("$tmp_dir")
+            seen["$tmp_dir"]=1
+        fi
+    done
+
+    # Revert it back into cd_hist
+    cd_hist=()
+    for (( i = ${#tmp[@]} - 1; i >= 0; i-- )); do
+        cd_hist+=("${tmp[i]}")
+    done
+
 }
 
 renew-line() {
