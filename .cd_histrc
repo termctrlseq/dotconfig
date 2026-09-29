@@ -77,7 +77,7 @@ update-cd-hist() {
     [[ -r "$CD_HIST_TMP" ]] && printf '%s\n' "${cd_hist[@]}" > "$CD_HIST_TMP"
 }
 
-# Remove duplicates
+# Remove duplicates and invalid entries
 dedup() {
     local tmp_dir
     local -a tmp
@@ -87,7 +87,7 @@ dedup() {
     for (( i = ${#cd_hist[@]} - 1; i >= 0; i-- )); do
         tmp_dir="${cd_hist[i]}"
         if [[ -n $tmp_dir && ! -v 'seen[${tmp_dir}]' ]]; then
-            tmp+=("$tmp_dir")
+            [[ -d $tmp_dir ]] && tmp+=("$tmp_dir")
             seen["$tmp_dir"]=1
         fi
     done
