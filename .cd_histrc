@@ -186,23 +186,35 @@ bind -m vi-insert  -x '"\e>": cd-hist-next'
 bind -m vi-command    '"\e.": "\e>\C-m\e\e\""'
 bind -m vi-insert     '"\e.": "\e>\C-m\e\""'
 
-# Display history with Alt-8 <*>
+# Display history with Alt-;
 show-cd-hist() {
     (( ${#cd_hist[@]} )) || return
-    local start=0 end="${#cd_hist[@]}" idx rel_num
-    for (( idx = start; idx < end; ++idx )); do
+    local idx rel_num
+
+    # Print separator
+    printf '\033[1;38;5;%sm' "$CD_HIST_REL_NUM_COLOR"
+    for idx in {1..5}; do printf '·'; done
+    printf '\033[0m\n'
+
+    for (( idx = 0; idx < ${#cd_hist[@]}; ++idx )); do
+        # Print relative number
         printf '\033[1;38;5;%sm' "$CD_HIST_REL_NUM_COLOR"
         rel_num=$(( cd_hist_current - idx ))
         printf '%2d' $(( rel_num < 0 ? -rel_num : rel_num ))
+
+        # Print marker
         if (( idx == cd_hist_current )); then
             printf '\033[38;5;%sm %s\033[0m' "$CD_HIST_SYMBOL_COLOR" "$CD_HIST_SYMBOL"
         else
             printf '  '
         fi
+
+        # Print cd history entry replacing HOME with tilde
         printf \
             '\033[1;38;5;%sm %s\033[0m\n' \
             "$CD_HIST_LIST_COLOR"         \
             "${cd_hist[idx]/$HOME/\~}"
+
     done
 }
 bind -m vi-command -x '"\e;": show-cd-hist'
