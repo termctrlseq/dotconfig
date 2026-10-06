@@ -244,5 +244,9 @@ show-cd-hist() {
 bind -m vi-command -x '"\e;": show-cd-hist'
 bind -m vi-insert  -x '"\e;": show-cd-hist'
 
+# Bind Ctrl-n/Ctrl-p to switch to next/previous directory and display updated history
+bind -m  vi-command '"\C-n": "\e>\C-m\e\e\"\e;"'
+bind -m  vi-command '"\C-p": "\e<\C-m\e\e\"\e;"'
+
 
 # vim: ft=sh

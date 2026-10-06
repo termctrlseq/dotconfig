@@ -85,7 +85,8 @@ command -v fzf >/dev/null 2>&1 \
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
-PS0="\e[2 q\e]112\a" # block cursor, reset color
+# block cursor, reset cursor color, erase from cursor to end of display
+PS0="\e[2 q\e]112\a\e[J"
 # Primary prompt is set with prompt_command
 PS1="\W \$ "
 PS1_LEN=
