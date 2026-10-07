@@ -94,17 +94,9 @@ PS1_LEN=
 # see console_codes(4): 'ECMA-48 Select Graphic Rendition'
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
 
-if [[ -r "${HOME}/.cd_histrc" ]] &&
-   source "${HOME}/.cd_histrc" &&
-   declare -F update-cd-hist >/dev/null
-then
-    alias update-cd-history="printf '\033[2K'; update-cd-hist"
-else
-    alias update-cd-history=''
-fi
+[[ -r "${HOME}/.cd_histrc" ]] && source "${HOME}/.cd_histrc"
 
 prompt_command() {
-
     local exit_code="$?" ps_one=""
     if (( exit_code != 0 )); then
         if (( exit_code > 128 )); then
@@ -160,7 +152,7 @@ prompt_command() {
     PS1+="\[\e[1;38;5;66m\]\$"
     PS1+="\[\e[0m\] "
 
-    update-cd-history
+    update-cd-hist
 }
 # executed prior to issuing each primary prompt.
 PROMPT_COMMAND=prompt_command
