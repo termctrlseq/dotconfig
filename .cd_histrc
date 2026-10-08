@@ -2,6 +2,14 @@
 # ~/.cd_histrc
 #
 
+# This goes into .tmux.conf for session-wide cd history
+## Create/erase session cd history file
+#set-hook -g pane-focus-in {
+#  set-environment -Fg CD_HIST_TMP_FILE "/tmp/cd_hist.#{pid}.#{session_name}"
+#  run-shell 'touch "$CD_HIST_TMP_FILE"'
+#  set-hook -g session-closed 'run-shell "rm -f \"$CD_HIST_TMP_FILE\""'
+#}
+
 # Colors (0 - 255)
 CD_HIST_LIST_COLOR=8
 CD_HIST_SYMBOL='→'

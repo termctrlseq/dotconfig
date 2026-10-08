@@ -82,19 +82,17 @@ command -v fzf >/dev/null 2>&1 \
 
 # Readline bindings
 [[ -r "${HOME}/.bindrc" ]] && source "${HOME}/.bindrc"
+[[ -r "${HOME}/.cd_histrc" ]] && source "${HOME}/.cd_histrc"
 
 # Prompt setup
 # Displayed after reading a command and before the command is executed.
 # block cursor, reset cursor color, erase from cursor to end of display
-PS0="\e[2 q\e]112\a\e[J"
+PS0="\[\e[2 q\e]112\a\e[J\]"
 # Primary prompt is set with prompt_command
 PS1="\W \$ "
 PS1_LEN=
 # Continuation prompt
-# see console_codes(4): 'ECMA-48 Select Graphic Rendition'
 PS2=" \[\e[1;38;5;8m\]...\[\e[0m\] "
-
-[[ -r "${HOME}/.cd_histrc" ]] && source "${HOME}/.cd_histrc"
 
 prompt_command() {
     local exit_code="$?" ps_one=""
