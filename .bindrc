@@ -93,7 +93,13 @@ bind -m emacs      -x '"\eh": run-help'
 # https://github.com/termctrlseq/pt-live
 start-ptpython() {
     local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
+    if [[ -v TMUX ]]; then
+        tmux rename-window ptpy
+    fi
     pt_live.py "${pt_prompt@P}"
+    if [[ -v TMUX ]]; then
+        tmux set-option automatic-rename on
+    fi
 }
 bind -m vi-command -x '"\er": start-ptpython'
 bind -m vi-insert  -x '"\er": start-ptpython'
