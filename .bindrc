@@ -107,17 +107,16 @@ bind -m vi-insert  -x '"\er": start-ptpython'
 # start auto completion menu with Alt-m
 # https://github.com/termctrlseq/bash-auto-comp
 bash-auto-comp() {
-    local mode prompt
+    local mode="" prompt cmd_file
     mode="\[\e[1;38;5;8m\][i]\[\e[0m\]"
-    prompt="${mode}$(perl -pe 's/\\\[\\e\].*?\\\]//g' <<<"${PS1}")"
-    local cmd_file
     local -a result
-    cmd_file="$(mktemp)"
+    prompt="${mode}$(perl -pe 's/\\\[\\e\].*?\\\]//g' <<<"${PS1}")"
+    cmd_file="$(mktemp)" || return
     trap 'rm -f "$cmd_file"' RETURN
 
-    bash_auto_comp.py "$cmd_file" "${prompt@P}"
-
-    if [[ -r "$cmd_file" ]]; then
+    if bash_auto_comp.py "$cmd_file" "${prompt@P}" \
+        && [[ -r "$cmd_file" ]]
+    then
         mapfile -t result <"$cmd_file"
         if ((${#result[@]} == 2)); then
             READLINE_POINT="${result[0]}"
