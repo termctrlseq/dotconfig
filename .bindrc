@@ -17,6 +17,9 @@ bind -m vi-insert   '"\eg":  glob-expand-word'
 # Perform shell word expansions
 bind -m vi-command  '"\ee":  shell-expand-line'
 bind -m vi-insert   '"\ee":  shell-expand-line'
+# Perform spelling correction on the current word
+bind -m vi-command  '"\ez":  spell-correct-word'
+bind -m vi-insert   '"\ez":  spell-correct-word'
 
 # Drag the word before point past the word after point
 bind -m vi-command  '"\C-t": transpose-words'
