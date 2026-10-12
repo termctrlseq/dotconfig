@@ -14,6 +14,9 @@ bind -m vi-insert   '"\ef":  history-expand-line'
 # Perform glob expansions
 bind -m vi-command  '"\eg":  glob-expand-word'
 bind -m vi-insert   '"\eg":  glob-expand-word'
+# Perform shell word expansions
+bind -m vi-command  '"\ee":  shell-expand-line'
+bind -m vi-insert   '"\ee":  shell-expand-line'
 
 # Drag the word before point past the word after point
 bind -m vi-command  '"\C-t": transpose-words'
