@@ -22,9 +22,8 @@ export HISTTIMEFORMAT='%F %T '
 shopt -s histappend globstar
 
 export EDITOR='vim'
-export  PAGER='bat -p'
 export   LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --mouse'
-export MANPAGER="bat -plman --pager='less -FR --mouse'"
+export MANPAGER='less -FR --mouse'
 export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Ignore ${HOME}/.git when in subdirectories
@@ -43,23 +42,6 @@ if [[ ! -e "$dir_colors" ]]; then
     dircolors --print-database > "$dir_colors"
 fi
 [[ -r "$dir_colors" ]] && eval "$(dircolors "$dir_colors")"
-
-# bat setup
-if command -v bat >/dev/null 2>&1; then
-    export BAT_STYLE='changes,header'
-    if command -v batman >/dev/null 2>&1; then
-        LESSOPEN="|/usr/bin/batpipe %s"
-        export LESSOPEN
-        unset LESSCLOSE
-        BATPIPE="color"
-        export BATPIPE
-    fi
-    if  [[  -f "${HOME}/.config/bat/themes/Spx.tmTheme" ]]; then
-        export BAT_THEME='Spx'
-    else
-        export BAT_THEME='base16'
-    fi
-fi
 
 if pgrep -xu "${USER}" qtile >/dev/null 2>&1; then
     alias reboot='qtile cmd-obj -o root -f shutdown; sleep 1; reboot'
