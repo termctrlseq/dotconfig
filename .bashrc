@@ -21,10 +21,24 @@ export HISTTIMEFORMAT='%F %T '
 
 shopt -s histappend globstar
 
-export EDITOR='vim'
-export   LESS='--quit-if-one-screen --RAW-CONTROL-CHARS --mouse'
-export MANPAGER='less -FR --mouse'
+# shellcheck disable=SC2016
+# export     LESS='--use-color FRDSkw$DOw-$DPs$'
+export     LESS='--use-color FRDPs$'
+export   EDITOR='vim'
+export MANPAGER='less --emouse=all'
 export XDG_CONFIG_HOME="${HOME}/.config"
+
+# Colorize Man Pages: https://www.youtube.com/watch?v=D0sG2fj0G4Y
+# see less(1) § ENVIRONMENT: LESS_TERMCAP_xx
+# and terminfo(5) § Standard Capabilities (3rd column 'TC' should match xx)
+export MANROFFOPT="-c"
+export LESS_TERMCAP_so=$'\e[7m' # standout start
+export LESS_TERMCAP_se=$'\e[0m' # standout end
+export LESS_TERMCAP_us=$'\e[1;4;38;5;104m' # underscore start
+export LESS_TERMCAP_ue=$'\e[0m' # underscore end
+export LESS_TERMCAP_md=$'\e[1;38;5;103m' # bold mode
+export LESS_TERMCAP_me=$'\e[0m' # turn off all attributes
+
 
 # Ignore ${HOME}/.git when in subdirectories
 export GIT_CEILING_DIRECTORIES="${HOME}"
