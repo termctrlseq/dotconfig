@@ -23,9 +23,9 @@ shopt -s histappend globstar
 
 # shellcheck disable=SC2016
 # export     LESS='--use-color FRDSkw$DOw-$DPs$'
-export     LESS='--use-color FRDPs$'
+export     LESS='--use-color --emouse=all FRDPs$'
 export   EDITOR='vim'
-export MANPAGER='less --emouse=all'
+export MANPAGER='less'
 export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Colorize Man Pages: https://www.youtube.com/watch?v=D0sG2fj0G4Y
