@@ -57,13 +57,19 @@ bind -m vi-insert  -x '"\C-b": upcase-word'
 
 # invoke the manual for the command preceding the cursor by pressing Alt-h.
 run-help() {
-    declare pager_cmd
+    declare -a pager_cmd
     declare -a line
-    declare tmp_line="${READLINE_LINE:0:READLINE_POINT}"
+    declare tmp_line
+    declare tmp_line_start="${READLINE_LINE:0:READLINE_POINT}"
+    declare tmp_line_end="${READLINE_LINE:READLINE_POINT}"
+    tmp_line="${tmp_line_start}${tmp_line_end%%[!A-Za-z0-9_]*}"
     tmp_line="${tmp_line##*|}"
     tmp_line="${tmp_line##*;}"
     tmp_line="${tmp_line##*\(}"
-    read -ra line <<< $tmp_line
+    read -ra line <<< "$tmp_line"
+    if (( ${#line[@]} == 0 )); then
+        return 1
+    fi
     if command -v bat >/dev/null 2>&1; then
         pager_cmd=(bat -plhelp)
     else
