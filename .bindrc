@@ -71,7 +71,7 @@ run-help() {
         return 1
     fi
     if command -v bat >/dev/null 2>&1; then
-        pager_cmd=(bat -plhelp)
+        pager_cmd=(bat -plhelp --theme Spx)
     else
         pager_cmd=(less)
     fi
