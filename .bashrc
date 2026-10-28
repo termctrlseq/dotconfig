@@ -22,8 +22,7 @@ export HISTTIMEFORMAT='%F %T '
 shopt -s histappend globstar
 
 # shellcheck disable=SC2016
-# export     LESS='--use-color FRDSkw$DOw-$DPs$'
-export     LESS='--use-color --emouse=all FRDPs$'
+export     LESS='--use-color --mouse FRDP232.242$'
 export   EDITOR='vim'
 export MANPAGER='less'
 export XDG_CONFIG_HOME="${HOME}/.config"
