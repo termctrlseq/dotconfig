@@ -87,7 +87,7 @@ update-cd-hist() {
 
 # Remove duplicates and invalid entries
 dedup() {
-    local tmp_dir
+    local tmp_dir i
     local -a tmp
     declare -A seen
 
