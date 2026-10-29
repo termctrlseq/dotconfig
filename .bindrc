@@ -57,45 +57,77 @@ bind -m vi-insert  -x '"\C-b": upcase-word'
 
 # invoke the manual for the command preceding the cursor by pressing Alt-h.
 run-help() {
-    declare -a pager_cmd
-    declare -a line
-    declare tmp_line
-    declare tmp_line_start="${READLINE_LINE:0:READLINE_POINT}"
-    declare tmp_line_end="${READLINE_LINE:READLINE_POINT}"
+    local tmp_line
+    local tmp_line_start="${READLINE_LINE:0:READLINE_POINT}"
+    local tmp_line_end="${READLINE_LINE:READLINE_POINT}"
     tmp_line="${tmp_line_start}${tmp_line_end%%[!A-Za-z0-9_]*}"
     tmp_line="${tmp_line##*|}"
     tmp_line="${tmp_line##*;}"
     tmp_line="${tmp_line##*\(}"
+
+    local -a line
     read -ra line <<< "$tmp_line"
     if (( ${#line[@]} == 0 )); then
         return 1
     fi
+
+    local -a pager_cmd
     if command -v bat >/dev/null 2>&1; then
         pager_cmd=(bat -plhelp --theme Spx)
     else
         pager_cmd=(less)
     fi
-    # Number of arguments is one
+
+    local -a cmd1 cmd2 cmd3
+    local -a help_cmd
+
+    # shellcheck disable=SC2034
     if (( ${#line[@]} == 1 )); then
-        if help "${line[@]}" >/dev/null 2>&1; then
-            help "${line[@]}" | "${pager_cmd[@]}"
-        elif "${line[@]}" --help >/dev/null 2>&1; then
-            "${line[@]}" --help | "${pager_cmd[@]}"
-        elif "${line[@]}" -h >/dev/null 2>&1; then
-            "${line[@]}" -h | "${pager_cmd[@]}"
-        else
-            return 1
-        fi
-    # Number of arguments is greater than one
-    elif (( ${#line[@]} > 1 )); then
-        if "${line[0]}" "help" "${line[@]:1}" >/dev/null 2>&1; then
-            "${line[0]}" "help" "${line[@]:1}" | "${pager_cmd[@]}"
-        elif "${line[@]}" --help >/dev/null 2>&1; then
-            "${line[@]}" --help | "${pager_cmd[@]}"
-        else
-            return 1
-        fi
+        cmd1=(help "${line[0]}")
+        cmd2=("${line[0]}" --help)
+        cmd3=("${line[0]}" -h)
+
+        help_cmd=(cmd1 cmd2 cmd3)
+    else
+        cmd1=("${line[0]}" help "${line[@]:1}")
+        cmd2=("${line[@]}" --help)
+
+        help_cmd=(cmd1 cmd2)
     fi
+
+    local cmd help_text lwid rwid lpad rpad
+
+    for cmd in "${help_cmd[@]}"; do
+        local -n args="$cmd"
+
+        if help_text="$("${args[@]}" 2>/dev/null)"; then
+            # Build the display label from the actual arguments.
+            printf -v cmd '%q ' "${args[@]}"
+            cmd=${cmd% }
+
+            # if the screen is wide enough, add a padding to the title line
+            if [[ -v COLUMNS ]] && ((COLUMNS - ${#cmd} > 4)); then
+                ((lwid = (COLUMNS - ${#cmd}) / 2))
+                ((rwid = COLUMNS - lwid - ${#cmd}))
+                printf -v lpad '%*s' $((lwid - 2)) ''
+                printf -v rpad '%*s' $((rwid - 2)) ''
+                lpad="${lpad// /+}"
+                rpad="${rpad// /+}"
+            else
+                lwid=1; rwid=1; lpad='+'; rpad='+'
+            fi
+
+            printf '%-*s%s%*s\n%s\n\n' \
+                "$lwid" "$lpad" "$cmd" "$rwid" "$rpad" "$help_text" \
+                | "${pager_cmd[@]}"
+            return
+
+        fi
+
+        unset -n args
+    done
+
+    return 1
 }
 bind -m vi-command -x '"\eh": run-help'
 bind -m vi-insert  -x '"\eh": run-help'
