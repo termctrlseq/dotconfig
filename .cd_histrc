@@ -212,6 +212,9 @@ bind -m vi-insert     '"\e.": "\e>\C-m\e\""'
 # Display history with Alt-; (alt-semicolon)
 show-cd-hist() {
     ((${#cd_hist[@]})) || return
+    # protection against stale current index
+    ((cd_hist_current > ${#cd_hist[@]} - 1)) \
+        && ((cd_hist_current = ${#cd_hist[@]} - 1))
     local idx rel_num
 
     for ((idx = 0; idx < ${#cd_hist[@]} + 1; ++idx)); do
