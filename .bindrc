@@ -1,0 +1,173 @@
+# vim: ft=sh
+#
+# ~/.bindrc
+#
+# shellcheck disable=SC2016,SC2064,SC2086
+
+# Attempt to perform completion on the text before point
+bind -m vi-command  '"\t":   complete'
+bind -m vi-insert   '"\t":   complete'
+
+# Perform history expansion on the current line
+bind -m vi-command  '"\ef":  history-expand-line'
+bind -m vi-insert   '"\ef":  history-expand-line'
+# Perform glob expansions
+bind -m vi-command  '"\eg":  glob-expand-word'
+bind -m vi-insert   '"\eg":  glob-expand-word'
+# Perform shell word expansions
+bind -m vi-command  '"\ee":  shell-expand-line'
+bind -m vi-insert   '"\ee":  shell-expand-line'
+# Perform spelling correction on the current word
+bind -m vi-command  '"\ez":  spell-correct-word'
+bind -m vi-insert   '"\ez":  spell-correct-word'
+
+# Drag the word before point past the word after point
+bind -m vi-command  '"\C-t": transpose-words'
+bind -m vi-insert   '"\C-t": transpose-words'
+
+# Clear screen
+bind -m vi-command  '"\C-l": clear-screen'
+bind -m vi-insert   '"\C-l": clear-screen'
+
+# Provide a negative numeric argument
+bind -m vi-command  '"-":    digit-argument'
+
+# Move cursor to the end of line
+bind -m vi-command  '"\C-e": end-of-line'
+bind -m vi-insert   '"\C-e": end-of-line'
+
+# Uppercase previous (or current) word with Ctrl-b
+upcase-word() {
+    local line word i j
+    declare -r PATTERN='[a-zA-Z0-9_-]'
+    line="$READLINE_LINE" # typed line
+    i="$READLINE_POINT"   # cursor position
+    j="$READLINE_POINT"
+    # find index of the beginning of the word under cursor
+    while ((i > 0)) && [[ "${line:${i}-1:1}" =~ $PATTERN ]]; do ((i--)); done
+    # find index of the end of the word under cursor
+    while [[ "${line:${j}:1}" =~ $PATTERN ]]; do ((j++)); done
+    # word under cursor (start=i; length=j-i)
+    word="${line:${i}:$((j - i))}"
+    # combine: line before word, upper-cased word, line after word
+    READLINE_LINE="${line:0:${i}}${word@U}${line: ${j}}"
+}
+bind -m vi-command -x '"\C-b": upcase-word'
+bind -m vi-insert  -x '"\C-b": upcase-word'
+
+# invoke the manual for the command preceding the cursor by pressing Alt-h.
+run-help() {
+    local tmp_line
+    local tmp_line_start="${READLINE_LINE:0:READLINE_POINT}"
+    local tmp_line_end="${READLINE_LINE:READLINE_POINT}"
+    tmp_line="${tmp_line_start}${tmp_line_end%%[!A-Za-z0-9_]*}"
+    tmp_line="${tmp_line##*|}"
+    tmp_line="${tmp_line##*;}"
+    tmp_line="${tmp_line##*\(}"
+
+    local -a line
+    read -ra line <<< "$tmp_line"
+    if (( ${#line[@]} == 0 )); then
+        return 1
+    fi
+
+    local -a pager_cmd
+    if command -v bat >/dev/null 2>&1; then
+        pager_cmd=(bat -plhelp --theme Spx)
+    else
+        pager_cmd=(less)
+    fi
+
+    local -a cmd1 cmd2 cmd3
+    local -a help_cmd
+
+    # shellcheck disable=SC2034
+    if (( ${#line[@]} == 1 )); then
+        cmd1=(help "${line[0]}")
+        cmd2=("${line[0]}" --help)
+        cmd3=("${line[0]}" -h)
+
+        help_cmd=(cmd1 cmd2 cmd3)
+    else
+        cmd1=("${line[0]}" help "${line[@]:1}")
+        cmd2=("${line[@]}" --help)
+
+        help_cmd=(cmd1 cmd2)
+    fi
+
+    local cmd help_text lwid rwid lpad rpad
+
+    for cmd in "${help_cmd[@]}"; do
+        local -n args="$cmd"
+
+        if help_text="$("${args[@]}" 2>/dev/null)"; then
+            # Build the display label from the actual arguments.
+            printf -v cmd '%q ' "${args[@]}"
+            cmd=${cmd% }
+
+            # if the screen is wide enough, add a padding to the title line
+            if [[ -v COLUMNS ]] && ((COLUMNS - ${#cmd} > 4)); then
+                ((lwid = (COLUMNS - ${#cmd}) / 2))
+                ((rwid = COLUMNS - lwid - ${#cmd}))
+                printf -v lpad '%*s' $((lwid - 2)) ''
+                printf -v rpad '%*s' $((rwid - 2)) ''
+                lpad="${lpad// /+}"
+                rpad="${rpad// /+}"
+            else
+                lwid=1; rwid=1; lpad='+'; rpad='+'
+            fi
+
+            printf '%-*s%s%*s\n%s\n\n' \
+                "$lwid" "$lpad" "$cmd" "$rwid" "$rpad" "$help_text" \
+                | "${pager_cmd[@]}"
+            return
+
+        fi
+
+        unset -n args
+    done
+
+    return 1
+}
+bind -m vi-command -x '"\eh": run-help'
+bind -m vi-insert  -x '"\eh": run-help'
+bind -m emacs      -x '"\eh": run-help'
+
+# start ptpython with Alt-r
+# https://github.com/termctrlseq/pt-live
+start-ptpython() {
+    local pt_prompt="\[\e[1;38;5;8m\][i]${PS1}\[\e[1;38;5;8m\]=> \[\e[0m\]"
+    if [[ -v TMUX ]]; then
+        tmux rename-window ptpy
+    fi
+    pt_live.py "${pt_prompt@P}"
+    if [[ -v TMUX ]]; then
+        tmux set-option automatic-rename on
+    fi
+}
+bind -m vi-command -x '"\er": start-ptpython'
+bind -m vi-insert  -x '"\er": start-ptpython'
+
+# start auto completion menu with Alt-m
+# https://github.com/termctrlseq/bash-auto-comp
+bash-auto-comp() {
+    local mode="" prompt cmd_file
+    mode="\[\e[1;38;5;8m\][i]\[\e[0m\]"
+    local -a result
+    prompt="${mode}$(perl -pe 's/\\\[\\e\].*?\\\]//g' <<<"${PS1}")"
+    cmd_file="$(mktemp)" || return
+    trap 'rm -f "$cmd_file"' RETURN
+
+    if bash_auto_comp.py "$cmd_file" "${prompt@P}" \
+        && [[ -r "$cmd_file" ]]
+    then
+        mapfile -t result <"$cmd_file"
+        if ((${#result[@]} == 2)); then
+            READLINE_POINT="${result[0]}"
+            READLINE_LINE="${result[1]}"
+        fi
+    fi
+}
+bind -m vi-command -x '"\em": bash-auto-comp'
+bind -m vi-insert  -x '"\em": bash-auto-comp'
+
